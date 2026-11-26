@@ -1,0 +1,295 @@
+import IpcBase from './base'
+import { BrowserWindow, session } from 'electron'
+import electron from 'electron'
+
+interface setForceRegionIpArgs {
+    ip:string;
+}
+
+interface accountArgs {
+    xuid:string;
+}
+
+interface setPreferredGameLanguageArgs {
+    language:string;
+}
+
+export default class IpcApp extends IpcBase {
+    // _streamingSessions:any = {}
+    _diagnosticWindows: Record<string, BrowserWindow | undefined> = {}
+
+    openDiagnosticWindow(url: 'chrome://gpu' | 'chrome://webrtc-internals', title: string){
+        const existing = this._diagnosticWindows[url]
+        if(existing && !existing.isDestroyed()){
+            existing.focus()
+            return true
+        }
+
+        const win = new BrowserWindow({
+            width: 1100,
+            height: 800,
+            title,
+            autoHideMenuBar: true,
+            webPreferences: {
+                nodeIntegration: false,
+                contextIsolation: true,
+                sandbox: true,
+            },
+        })
+        this._diagnosticWindows[url] = win
+        win.on('closed', () => {
+            if(this._diagnosticWindows[url] === win){
+                this._diagnosticWindows[url] = undefined
+            }
+        })
+        win.loadURL(url)
+        return true
+    }
+
+    openGpuInfo(){
+        return Promise.resolve(this.openDiagnosticWindow('chrome://gpu', 'XenonStream - GPU Diagnostics'))
+    }
+
+    openWebrtcInternals(){
+        return Promise.resolve(this.openDiagnosticWindow('chrome://webrtc-internals', 'XenonStream - WebRTC Internals'))
+    }
+
+    // Microphone permission of the app. Only macOS keeps it per app; elsewhere the OS or browser prompts directly.
+    getMicrophoneAccess(){
+        return Promise.resolve(process.platform === 'darwin' ? electron.systemPreferences.getMediaAccessStatus('microphone') : 'granted')
+    }
+
+    askMicrophoneAccess(){
+        return process.platform === 'darwin' ? electron.systemPreferences.askForMediaAccess('microphone') : Promise.resolve(true)
+    }
+
+    openMicrophoneSettings(){
+        return electron.shell.openExternal('x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone').then(() => true)
+    }
+
+    getConsoleId(){
+        return Promise.resolve(this._application.getStartupFlags().consoleId || '')
+    }
+
+    getInstanceProfile(){
+        return Promise.resolve(this._application.getStartupFlags().profile || '')
+    }
+
+    loadCachedUser(){
+        return new Promise((resolve) => {
+            const user = this.getUserState()
+
+            resolve(user)
+        })
+    }
+
+    getUserState(){
+        const gamertag = this._application._store.get('user.gamertag')
+        const gamerpic = this._application._store.get('user.gamerpic')
+        const gamerscore = this._application._store.get('user.gamerscore')
+
+        return {
+            signedIn: gamertag ? true : false,
+            type: 'user',
+            gamertag: gamertag ? gamertag : '',
+            gamerpic: gamerpic ? gamerpic : '',
+            gamerscore: gamerscore ? gamerscore : '',
+            level: this._application._authentication._appLevel,
+        }
+    }
+
+    getAuthState(){
+        return new Promise((resolve) => {
+            resolve({
+                isAuthenticating: this._application._authentication._isAuthenticating,
+                isAuthenticated: this._application._authentication._isAuthenticated,
+                user: this.getUserState(),
+            })
+        })
+    }
+
+    login(){
+        return new Promise<boolean>((resolve) => {
+            this._application._authentication.startAuthflow()
+            resolve(true)
+        })
+    }
+
+    getAccounts(){
+        return new Promise((resolve) => {
+            const accounts = this._application._authentication.getAccounts()
+            const active = this._application._authentication.getActiveAccount()
+
+            resolve(Object.values(accounts).map((account:any) => ({
+                xuid: account.xuid,
+                gamertag: account.gamertag,
+                gamerpic: account.gamerpic,
+                gamerscore: account.gamerscore,
+                active: account.xuid === active,
+            })))
+        })
+    }
+
+    switchAccount(args:accountArgs){
+        return new Promise<boolean>((resolve) => {
+            resolve(true)
+            setTimeout(() => {
+                this._application._authentication.switchAccount(args.xuid)
+            }, 100)
+        })
+    }
+
+    addAccount(){
+        return new Promise<boolean>((resolve) => {
+            resolve(true)
+            setTimeout(() => {
+                this._application._authentication.addAccount()
+            }, 100)
+        })
+    }
+
+    removeAccount(args:accountArgs){
+        return new Promise<boolean>((resolve) => {
+            resolve(true)
+            setTimeout(() => {
+                this._application._authentication.removeAccount(args.xuid)
+            }, 100)
+        })
+    }
+
+    quit(){
+        return new Promise<boolean>((resolve) => {
+            resolve(true)
+            setTimeout(() => {
+                this._application.quit()
+            }, 100)
+        })
+    }
+
+    restart(){
+        return new Promise<boolean>((resolve) => {
+            resolve(true)
+            setTimeout(() => {
+                this._application.restart()
+            }, 100)
+        })
+    }
+
+    clearData(){
+        return new Promise<boolean>((resolve, reject) => {
+            session.defaultSession.clearStorageData().then(() => {
+                this._application._authentication._tokenStore.clear()
+                this._application._store.delete('user')
+                this._application._store.delete('auth')
+                this._application._store.delete('accounts')
+
+                this._application.log('authentication', __filename+'[startIpcEvents()] Received restart request. Restarting application...')
+                this._application.restart()
+                resolve(true)
+
+            }).catch((error) => {
+                this._application.log('authentication', __filename+'[startIpcEvents()] Error: Failed to clear local storage!')
+                reject(error)
+            })
+        })
+    }
+
+    getOnlineFriends(){
+        return new Promise((resolve) => {
+            if(this._application._xboxWorker === undefined){
+                // Worker is not loaded yet..
+                resolve([])
+            } else {
+                resolve(this._application._xboxWorker._onlineFriends)
+            }
+        })
+    }
+
+    onUiShown(){
+
+        return new Promise((resolve) => {
+            resolve({
+                autoStream: this._application.getStartupFlags().autoStream,
+            })
+            this._application.getStartupFlags().autoStream = ''
+        })
+    }
+
+    setForceRegionIp(args:setForceRegionIpArgs){
+        return new Promise<boolean>((resolve) => {
+            console.log('IPC received force region IP data and write to store:', args.ip)
+            this._application._store.set('force_region_ip', args.ip)
+
+            // Recreate Xal instance to reset all internal state and connections
+            const { _authentication } = this._application
+            const { _tokenStore } = _authentication
+            const { Msal } = require('xal-node')
+            _authentication._msal = new Msal(_tokenStore)
+
+            // Rerun silent flow to retrieve new tokens with new region
+            _authentication.startSilentFlow()
+
+            resolve(true)
+        })
+    }
+
+    setPreferredGameLanguage(args:setPreferredGameLanguageArgs){
+        return new Promise((resolve) => {
+            console.log('IPC received preferred game\'s language and write to store:', args.language)
+            this._application._store.set('preferred_game_language', args.language)
+
+            resolve(true)
+        })
+    }
+
+    async debug(){
+        const returnValue = []
+        const formatLastUpdate = (timestamp:number) => timestamp > 0 ? new Date(timestamp).toISOString() : 'Never'
+
+        const gpuInfo = await electron.app.getGPUInfo('complete') as { auxAttributes?: { glRenderer?: string } }
+
+        // Application Values
+        returnValue.push({
+            name: 'Application',
+            data: [
+                { name: 'Name', value: 'XenonStream' },
+                { name: 'Version', value: electron.app.getVersion() },
+                { name: 'GPU Info', value: gpuInfo?.auxAttributes?.glRenderer ?? '' },
+            ],
+        })
+
+        // xCloud values
+        returnValue.push({
+            name: 'xCloud',
+            data: [
+                { name: 'Titles in cache', value: this._application._ipc._channels.xCloud._titles.length },
+                { name: 'Titles last update', value: formatLastUpdate(this._application._ipc._channels.xCloud._titlesLastUpdate) },
+                { name: 'Recent titles in cache', value: this._application._ipc._channels.xCloud._recentTitles.length },
+                { name: 'Recent titles last update', value: formatLastUpdate(this._application._ipc._channels.xCloud._recentTitlesLastUpdate) },
+                { name: '', value: ''},
+                { name: 'Titlemanager titles loaded', value: Object.keys(this._application._ipc._channels.xCloud._titleManager._xCloudTitles).length },
+
+            ],
+        })
+
+        // Streaming values
+        returnValue.push({
+            name: 'Streaming',
+            data: [
+                { name: 'Active sessions', value: Object.keys(this._application._ipc._channels.streaming._streamManager._sessions).length },
+
+            ],
+        })
+
+        // Tokenstore values
+        // returnValue.push({
+        //     name: 'XAL',
+        //     data: [
+        //         { name: 'User token expires in', value: this._application._authentication._tokenStore.getUserToken().getSecondsValid() },
+        //         { name: 'Authenticated user', value: this._application._authentication._tokenStore.getUserToken().getGamertag() + ' ('+this._application._authentication._tokenStore.getUserToken().getUserHash()+')' },
+        //     ],
+        // })
+
+        return returnValue
+    }
+}

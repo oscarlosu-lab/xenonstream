@@ -1,0 +1,278 @@
+div#streamComponent {
+    background: #000000;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 95;
+}
+
+div#streamComponent video {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    z-index: 96;
+}
+
+div#streamComponent.size_stretch video {
+    object-fit: fill;
+}
+
+div#streamComponent.size_zoom video {
+    object-fit: cover;
+}
+
+div#component_streamcomponent_debug {
+    z-index: 97;
+
+    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 60vw;
+    height: 620px;
+    overflow-y: auto;
+}
+
+div#component_streamcomponent_debug p {
+    padding: 5px;
+}
+
+
+div#component_streamcomponent_debug_text {
+    height: 500px;
+    width: 20vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+div#component_streamcomponent_debug_webrtc_jitter, div#component_streamcomponent_debug_webrtc_dropped {
+    background: rgba(255, 255, 255, 0.5);
+    width: 600px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+div#component_streamcomponent_debug.hidden {
+    display: none;
+}
+
+div#component_streamcomponent_gamebar {
+    z-index: 98;
+
+    backdrop-filter: blur(22px);
+    background: rgba(7, 13, 18, 0.78);
+    border-bottom: 1px solid rgba(74, 222, 128, 0.22);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hint to free the mouse: a tab hanging from the top edge, with rounded bottom corners and concave top corners. */
+div#component_streamcomponent_mousehint {
+    --hint-color: rgba(0, 0, 0, 0.35);
+    --hint-radius: 14px;
+    --hint-flare: 28px;
+
+    z-index: 99;
+    position: fixed;
+    top: 0;
+    left: 37.5%;
+    width: 25%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 14px;
+    line-height: 16px;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    background: var(--hint-color);
+    border-radius: 0 0 var(--hint-radius) var(--hint-radius);
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+div#component_streamcomponent_mousehint::before,
+div#component_streamcomponent_mousehint::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: var(--hint-flare);
+    height: var(--hint-flare);
+}
+
+div#component_streamcomponent_mousehint::before {
+    left: calc(var(--hint-flare) * -1);
+    background: radial-gradient(circle at 0 100%, transparent var(--hint-flare), var(--hint-color) var(--hint-flare));
+}
+
+div#component_streamcomponent_mousehint::after {
+    right: calc(var(--hint-flare) * -1);
+    background: radial-gradient(circle at 100% 100%, transparent var(--hint-flare), var(--hint-color) var(--hint-flare));
+}
+
+div#component_streamcomponent_mousehint.hidden {
+    opacity: 0;
+}
+
+div#component_streamcomponent_gamebar.hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+    pointer-events: none;
+}
+
+button#component_streamcomponent_gamebar_toggle {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
+    width: 48px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(7, 13, 18, 0.86);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(74, 222, 128, 0.55);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    color: #4ade80;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 0;
+    transition: top 0.25s ease-in-out, opacity 0.2s ease-in-out, height 0.2s ease-in-out, background-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+button#component_streamcomponent_gamebar_toggle.bar-open {
+    top: 70px;
+    opacity: 0.95;
+}
+
+button#component_streamcomponent_gamebar_toggle.bar-collapsed {
+    top: 0px;
+    height: 16px;
+    opacity: 0.55;
+}
+
+button#component_streamcomponent_gamebar_toggle:hover,
+button#component_streamcomponent_gamebar_toggle:focus-visible {
+    opacity: 1;
+    background: rgba(16, 185, 129, 0.28);
+    color: #ecfdf5;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    outline: none;
+}
+
+button#component_streamcomponent_gamebar_toggle.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+div#component_streamcomponent_gamebar div#component_streamcomponent_gamebar_menu {
+    padding-top: 13px;
+    padding-left: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+div#component_streamcomponent_audiodevices {
+    backdrop-filter: blur(22px);
+    background: rgba(7, 13, 18, 0.88);
+    border: 1px solid rgba(74, 222, 128, 0.22);
+    border-top: 0;
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    border-radius: 0 0 12px 12px;
+
+    /* Two columns so labels and selects line up regardless of label length */
+    display: grid;
+    grid-template-columns: auto 320px;
+    align-items: center;
+    gap: 10px;
+}
+
+div#component_streamcomponent_audiodevices p {
+    display: contents;
+}
+
+/* Match the .btn style used by the gamebar buttons */
+div#component_streamcomponent_audiodevices select {
+    width: 100%;
+    padding: 0.7rem 2.2rem 0.7rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #444444;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%23ffffff'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    border: 2px solid #444444;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-overflow: ellipsis;
+
+    transition: background-color 0.1s ease;
+}
+
+div#component_streamcomponent_audiodevices select:hover {
+    background-color: #6f6f6f;
+}
+
+div#component_streamcomponent_audiodevices select:focus {
+    outline: none;
+    border-color: #005e31;
+}
+
+div#component_streamcomponent_audiodevices select option {
+    background-color: #444444;
+    color: #ffffff;
+    text-transform: none;
+    font-weight: normal;
+}
+
+div#component_streamcomponent_loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: fixed;
+    z-index: 98;
+    top: 70px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    text-align: center;
+}
+
+div#component_streamcomponent_loader.hidden {
+    display: none;
+}
+
+/* uPlot css */
+.uplot, .uplot *, .uplot *::before, .uplot *::after {box-sizing: border-box;}.uplot {font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";line-height: 1.5;width: min-content;}.u-title {text-align: center;font-size: 18px;font-weight: bold;}.u-wrap {position: relative;user-select: none;}.u-over, .u-under {position: absolute;}.u-under {overflow: hidden;}.uplot canvas {display: block;position: relative;width: 100%;height: 100%;}.u-axis {position: absolute;}.u-legend {font-size: 14px;margin: auto;text-align: center;}.u-inline {display: block;}.u-inline * {display: inline-block;}.u-inline tr {margin-right: 16px;}.u-legend th {font-weight: 600;}.u-legend th > * {vertical-align: middle;display: inline-block;}.u-legend .u-marker {width: 1em;height: 1em;margin-right: 4px;background-clip: padding-box !important;}.u-inline.u-live th::after {content: ":";vertical-align: middle;}.u-inline:not(.u-live) .u-value {display: none;}.u-series > * {padding: 4px;}.u-series th {cursor: pointer;}.u-legend .u-off > * {opacity: 0.3;}.u-select {background: rgba(0,0,0,0.07);position: absolute;pointer-events: none;}.u-cursor-x, .u-cursor-y {position: absolute;left: 0;top: 0;pointer-events: none;will-change: transform;z-index: 100;}.u-hz .u-cursor-x, .u-vt .u-cursor-y {height: 100%;border-right: 1px dashed #607D8B;}.u-hz .u-cursor-y, .u-vt .u-cursor-x {width: 100%;border-bottom: 1px dashed #607D8B;}.u-cursor-pt {position: absolute;top: 0;left: 0;border-radius: 50%;border: 0 solid;pointer-events: none;will-change: transform;z-index: 100;/*this has to be !important since we set inline "background" shorthand */background-clip: padding-box !important;}.u-axis.u-off, .u-select.u-off, .u-cursor-x.u-off, .u-cursor-y.u-off, .u-cursor-pt.u-off {display: none;}

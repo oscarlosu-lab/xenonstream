@@ -1,0 +1,126 @@
+div#component_auth {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div#component_auth_modal {
+    min-width: 50%;
+    max-width: 640px;
+}
+
+.xs-auth-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.xs-auth-logo {
+    border-radius: 14px;
+    filter: drop-shadow(0 0 18px rgba(74, 222, 128, 0.4));
+}
+
+.xs-auth-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.xs-auth-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #f8fafc;
+    line-height: 1.1;
+}
+
+.xs-auth-title span {
+    background: linear-gradient(90deg, #4ade80, #22d3ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.xs-auth-subtitle {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6ee7b7;
+    background: rgba(16, 185, 129, 0.14);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    border-radius: 999px;
+    padding: 3px 10px;
+    width: fit-content;
+}
+
+.component_auth_device_login {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+    max-width: 580px;
+    padding: 22px;
+}
+
+.component_auth_qr {
+    display: flex;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 2px solid rgba(74, 222, 128, 0.65);
+    box-shadow: 0 0 28px rgba(16, 185, 129, 0.28);
+}
+
+.component_auth_device_login > div:last-child {
+    flex: 1 1 220px;
+}
+
+.component_auth_device_code {
+    display: block;
+    margin: 14px 0;
+    padding: 10px 16px;
+    font-family: 'Cascadia Mono', Consolas, 'Courier New', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.18em;
+    color: #6ee7b7;
+    background: rgba(6, 182, 212, 0.1);
+    border: 1px solid rgba(52, 211, 153, 0.35);
+    border-radius: 10px;
+    user-select: all;
+}
+
+div.component_auth_profile_container {
+    display: flex;
+    padding-bottom: 20px;
+}
+
+div.component_auth_profile_gamerpic {
+    width: 80px;
+    height: 80px;
+}
+
+div.component_auth_profile_gamerpic img.component_auth_profile_gamerpic_img {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    border: 2px solid rgba(74, 222, 128, 0.55);
+}
+
+div.component_auth_profile_userdetails {
+    padding-top: 10px;
+    padding-left: 20px;
+    font-size: 13px;
+}
+
+div.component_auth_profile_userdetails h1 {
+    font-weight: 600;
+    font-size: 20px;
+    padding-bottom: 5px;
+}

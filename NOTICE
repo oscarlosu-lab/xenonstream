@@ -1,0 +1,26 @@
+THIRD-PARTY SOFTWARE NOTICES AND ATTRIBUTION
+
+XenonStream (https://github.com/oscarlosu-lab/xenonstream) is a standalone
+open-source Xbox Remote Play and Xbox Cloud Gaming (xCloud) desktop client
+licensed under the MIT License.
+
+XenonStream includes and builds upon the following open-source projects and
+community contributions:
+
+1. Greenlight (https://github.com/unknownskl/greenlight)
+   Copyright (c) 2019 UnknownSKL (Jim Kroon)
+   Licensed under the MIT License.
+
+2. xbox-xcloud-player (https://github.com/unknownskl/xbox-xcloud-player)
+   Copyright (c) UnknownSKL (Jim Kroon) and contributors
+   Licensed under the MIT License.
+
+3. electron-update-notifier (https://github.com/ankurk91/electron-update-notifier)
+   Base update checker logic by @ankurk91, licensed under the MIT License.
+
+4. amd-patched-mesa (https://github.com/Originalimoc/amd-patched-mesa)
+   Used in Flatpak Linux builds for VA-API hardware video decoding support.
+
+5. Localization Contributors
+   Community translators across 13 supported locales (de-DE, en-US, es-ES,
+   fr-FR, it-IT, ja-JP, ko-KR, pl-PL, pt-BR, ru-RU, tr-TR, uk-UA, zh-CN).

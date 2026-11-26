@@ -1,0 +1,411 @@
+import https from 'https'
+import Application from '../application'
+import { Address6 } from 'ip-address'
+import { describeIceCandidate } from '../../shared/iceLog'
+import { withTokenRefresh } from './tokenrefresh'
+
+export interface playResult {
+    sessionPath:string;
+    sessionId?:string;
+    state?:string;
+}
+
+export interface exchangeResult {
+    exchangeResponse:string;
+    errorDetails: {
+        code: any;
+        message: any;
+    };
+}
+
+export default class xCloudApi {
+
+    _application
+
+    _host:string
+    _token:string
+    _type:'home'|'cloud'
+
+    _sessionPath:string
+
+    _exchangeCounter = 0
+    _exchangeUrl = ''
+    _currentGame = ''
+
+    constructor(application:Application, host:string, token: string, type:'home'|'cloud' = 'home'){
+        this._application = application
+        this._host = host
+        this._token = token
+        this._type = type
+    }
+
+    setToken(token:string){
+        this._token = token
+    }
+
+    // Requests are retried once with new tokens if the token was refused (it expired while the app was open or the computer was asleep).
+    get(url: string, method = 'GET') {
+        return withTokenRefresh(this._application, () => this._get(url, method))
+    }
+
+    post(url: string, postData = {}, headers = {}) {
+        return withTokenRefresh(this._application, () => this._post(url, postData, headers))
+    }
+
+    _get(url: string, method = 'GET') {
+        return new Promise((resolve, reject) => {
+            let responseData = ''
+            let settled = false
+
+            const req = https.request({
+                host: this._host,
+                path: url,
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this._token,
+                },
+            }, (response:any) => {
+                response.on('data', (data:any) => {
+                    responseData += data
+                })
+
+                response.on('end', () => {
+                    if(settled){
+                        return
+                    }
+                    settled = true
+
+                    if(response.statusCode >= 200 && response.statusCode <= 299){
+                        this._application.log('xCloudApi', 'get('+url+', '+method+') resolve:', response.statusCode)
+                        let returnData = responseData
+                        try {
+                            returnData = JSON.parse(responseData)
+                        } catch(error){
+                            // Data is not JSON..
+                        }
+
+                        if(response.statusCode === 204){
+                            // We have to retry..
+                            setTimeout(() => {
+                                this._get(url, method).then(resolve, reject)
+                            }, 750)
+                        } else {
+                            resolve(returnData)
+                        }
+                    } else {
+                        this._application.log('xCloudApi', 'get('+url+') reject:', response.statusCode)
+                        reject({
+                            url: url,
+                            status: response.statusCode,
+                            body: responseData,
+                        })
+                    }
+                })
+            })
+
+            req.on('error', (error) => {
+                if(settled){
+                    return
+                }
+                settled = true
+                reject(error)
+            })
+            req.end()
+        })
+    }
+
+    _post(url: string, postData = {}, headers = {}) {
+        return new Promise((resolve, reject) => {
+            let responseData = ''
+            let settled = false
+            const mergedHeaders = Object.assign({}, {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+this._token,
+            }, headers)
+
+            const req = https.request({
+                host: this._host,
+                path: url,
+                method: 'POST',
+                headers: mergedHeaders,
+            }, (response:any) => {
+
+                response.on('data', (data:any) => {
+                    responseData += data
+                })
+
+                response.on('end', () => {
+                    if(settled){
+                        return
+                    }
+                    settled = true
+
+                    if(response.statusCode >= 200 && response.statusCode <= 299){
+                        this._application.log('xCloudApi', 'post('+url+') resolve:', response.statusCode, responseData)
+
+                        let returnData = responseData
+                        try {
+                            returnData = JSON.parse(responseData)
+                        } catch(error){
+                            // Data is not JSON..
+                        }
+                        
+                        resolve(returnData)
+                    } else {
+                        this._application.log('xCloudApi', 'post('+url+') reject:', response.statusCode)
+                        reject({
+                            url: url,
+                            status: response.statusCode,
+                            body: responseData,
+                        })
+                    }
+                })
+            })
+
+            req.on('error', (error) => {
+                if(settled){
+                    return
+                }
+                settled = true
+                reject(error)
+            })
+
+            req.write(JSON.stringify(postData))
+
+            req.end()
+        })
+    }
+
+    getWaitingTimes(titleId){
+        return this.get('/v1/waittime/'+titleId)
+    }
+
+    getTitles() {
+        return this.get('/v2/titles')
+    }
+
+    getRecentTitles() {
+        return this.get('/v2/titles/mru?mr=25')
+    }
+
+    stopStream(sessionId) {
+        return this.get('/v5/sessions/'+this._type+'/'+sessionId, 'DELETE')
+    }
+
+    startStream(target:string, resolution = 1080){
+        const height = [720, 1080, 1440].includes(resolution) ? resolution : 1080
+
+        const deviceInfo = JSON.stringify({
+            'appInfo': {
+                'env': {
+                    'clientAppId': 'Microsoft.GamingApp',
+                    'clientAppType': 'native',
+                    'clientAppVersion': '2203.1001.4.0',
+                    'clientSdkVersion': '8.5.2',
+                    'httpEnvironment': 'prod',
+                    'sdkInstallId': '',
+                },
+            },
+            'dev': {
+                'hw': {
+                    'make': 'Microsoft',
+                    'model': 'Surface Pro',
+                    'sdktype': 'native',
+                },
+                'os': {
+                    'name': 'Windows 11',
+                    'ver': '22631.2715',
+                    'platform': 'desktop',
+                },
+                'displayInfo': {
+                    'dimensions': {
+                        'widthInPixels': height * 16 / 9,
+                        'heightInPixels': height,
+                    },
+                    'pixelDensity': {
+                        'dpiX': 1,
+                        'dpiY': 1,
+                    },
+                },
+            },
+        })
+
+        const postData = {
+            'titleId': (this._type === 'cloud') ? target : '',
+            'systemUpdateGroup': '',
+            'clientSessionId': '',
+            'settings': {
+                'nanoVersion': 'V3;WebrtcTransport.dll',
+                'enableTextToSpeech': false,
+                'highContrast': 0,
+                'locale': this._application._store.get('preferred_game_language', 'en-US'),
+                'useIceConnection': false,
+                'timezoneOffsetMinutes': 120,
+                'sdkType': 'web',
+                'osName': 'windows',
+            },
+            'serverId': (this._type === 'home') ? target : '',
+            'fallbackRegionNames': [],
+        }
+
+        return this.post('/v5/sessions/'+this._type+'/play', postData, {
+            'X-MS-Device-Info': deviceInfo,
+            // 'User-Agent': deviceInfo
+        })
+    }
+
+    getStreamState(sessionId:string) {
+        return this.get('/v5/sessions/'+this._type+'/'+sessionId+'/state')
+    }
+
+    sendSdp(sessionId:string, sdp: string){
+        return new Promise((resolve, reject) => {
+            const postData = {
+                'messageType':'offer',
+                'sdp': sdp,
+                'configuration':{
+                    'chatConfiguration':{
+                        'bytesPerSample':2,
+                        'expectedClipDurationMs':20,
+                        'format':{
+                            'codec':'opus',
+                            'container':'webm',
+                        },
+                        'numChannels':1,
+                        'sampleFrequencyHz':24000,
+                    },
+                    'chat':{
+                        'minVersion':1,
+                        'maxVersion':1,
+                    },
+                    'control':{
+                        'minVersion':1,
+                        'maxVersion':3,
+                    },
+                    'input':{
+                        'minVersion':1,
+                        'maxVersion':8,
+                    },
+                    'message':{
+                        'minVersion':1,
+                        'maxVersion':1,
+                    },
+                },
+            }
+
+            this.post('/v5/sessions/'+this._type+'/'+sessionId+'/sdp', postData).then(() => {
+
+                this.get('/v5/sessions/'+this._type+'/'+sessionId+'/sdp').then((sdpResult:exchangeResult) => {
+                    const exchangeSdp = JSON.parse(sdpResult.exchangeResponse)
+                    
+                    resolve(exchangeSdp)
+
+                }).catch((error) => {
+                    reject(error)
+                })
+
+            }).catch((error) => {
+                reject(error)
+            })
+        })
+    }
+
+    sendChatSdp(sessionId:string, sdp: string){
+        return new Promise((resolve, reject) => {
+            const postData = {
+                'messageType':'offer',
+                'sdp': sdp,
+                'configuration':{
+                    'isMediaStreamsChatRenegotiation': true,
+                },
+            }
+
+            this.post('/v5/sessions/'+this._type+'/'+sessionId+'/sdp', postData).then(() => {
+
+                this.get('/v5/sessions/'+this._type+'/'+sessionId+'/sdp').then((sdpResult:exchangeResult) => {
+                    const exchangeSdp = JSON.parse(sdpResult.exchangeResponse)
+                    
+                    resolve(exchangeSdp)
+
+                }).catch((error) => {
+                    reject(error)
+                })
+
+            }).catch((error) => {
+                reject(error)
+            })
+        })
+    }
+
+    sendIce(sessionId:string, ice:any, remotePort = 9002){
+        return new Promise((resolve, reject) => {
+            const postData = {
+                'messageType': 'iceCandidate',
+                'candidate': ice,
+            }
+
+            this.post('/v5/sessions/'+this._type+'/'+sessionId+'/ice', postData).then(() => {
+                this._application.log('stream-path', `posted ${postData.candidate.length} local candidates to ${this._host}`)
+                postData.candidate.forEach((item, index) => {
+                    this._application.log('stream-path', `local #${index + 1} ${describeIceCandidate(item.candidate)}`)
+                })
+
+                this.get('/v5/sessions/'+this._type+'/'+sessionId+'/ice').then((iceResult:exchangeResult) => {
+                    const exchangeIce = JSON.parse(iceResult.exchangeResponse)
+
+                    const computedCandidates = []
+
+                    // Find Teredo Address and extract remote ip
+                    for(const candidate in exchangeIce){
+                        const candidateAddress = exchangeIce[candidate].candidate.split(' ')
+                        this._application.log('stream-path', `console #${Number(candidate) + 1} ${describeIceCandidate(exchangeIce[candidate].candidate)}`)
+                        
+                        if(candidateAddress.length > 4 && candidateAddress[4].substr(0, 4) === '2001'){
+                            const address = new Address6(candidateAddress[4])
+                            const teredo = address.inspectTeredo()
+                            this._application.log('stream-path', `teredo ${candidateAddress[4]} rewritten to public IPv4 ${teredo.client4} ports ${remotePort} and ${teredo.udpPort}`)
+
+                            computedCandidates.push({
+                                candidate: 'a=candidate:10 1 UDP 1 '+teredo.client4+' '+remotePort+' typ host ',
+                                messageType: 'iceCandidate',
+                                sdpMLineIndex: '0',
+                                sdpMid: '0',
+                            })
+                            computedCandidates.push({
+                                candidate: 'a=candidate:11 1 UDP 1 '+teredo.client4+' '+teredo.udpPort+' typ host ',
+                                messageType: 'iceCandidate',
+                                sdpMLineIndex: '0',
+                                sdpMid: '0',
+                            })
+                        }
+
+                        computedCandidates.push(exchangeIce[candidate])
+                    }
+                    
+                    resolve(computedCandidates)
+
+                }).catch((error) => {
+                    reject(error)
+                })
+
+            }).catch((error) => {
+                reject(error)
+            })
+        })
+    }
+
+    sendMSALAuth(sessionId:string, userToken:string){
+        return this.post('/v5/sessions/'+this._type+'/'+sessionId+'/connect', {
+            'userToken': userToken,
+        })
+    }
+
+    sendKeepalive(sessionId:string){
+        return this.post('/v5/sessions/'+this._type+'/'+sessionId+'/keepalive')
+    }
+
+    getActiveSessions(){
+        return this.get('/v5/sessions/'+this._type+'/active')
+    }
+}

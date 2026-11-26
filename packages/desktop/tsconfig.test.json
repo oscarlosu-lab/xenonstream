@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["dom", "dom.iterable", "es2022"],
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "types": ["node", "jest"]
+  },
+  "include": [
+    "main/**/*.ts",
+    "renderer/@types/**/*.d.ts",
+    "renderer/**/*.ts",
+    "renderer/**/*.tsx",
+    "tests/sanitizers/**/*.ts",
+    "tests/sanitizers/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "renderer/node_modules",
+    "renderer/.next",
+    "app",
+    "dist"
+  ]
+}

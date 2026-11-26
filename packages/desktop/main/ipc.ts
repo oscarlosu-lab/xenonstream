@@ -1,0 +1,71 @@
+import Application from './application'
+import IpcConsoles from './ipc/consoles'
+import IpcStreaming from './ipc/streaming'
+import IpcxCloud from './ipc/xcloud'
+import IpcApp from './ipc/app'
+import IpcSettings from './ipc/settings'
+import IpcScreenshot from './ipc/screenshot'
+
+import { ipcMain } from 'electron'
+
+interface IpcChannels {
+    streaming: IpcStreaming;
+    consoles: IpcConsoles;
+    app: IpcApp;
+    xCloud: IpcxCloud;
+    settings: IpcSettings;
+    screenshot: IpcScreenshot;
+}
+
+export default class Ipc {
+
+    _application:Application
+
+    _channels:IpcChannels
+
+    constructor(application:Application){
+        this._application = application
+
+        this._channels = {
+            streaming: new IpcStreaming(this._application),
+            consoles: new IpcConsoles(this._application),
+            app: new IpcApp(this._application),
+            xCloud: new IpcxCloud(this._application),
+            settings: new IpcSettings(this._application),
+            screenshot: new IpcScreenshot(this._application),
+        }
+
+        for(const channel in this._channels){
+            ipcMain.on(channel, (event, args) => {
+                this._channels[channel].onEvent(channel, event, args) 
+            })
+        }
+
+        ipcMain.handle('xenonstream:device-login', (event) => {
+            const mainContents = this._application._mainWindow?.webContents
+            if(event.sender === mainContents && event.senderFrame === mainContents?.mainFrame){
+                return this._application._authentication.deviceLogin
+            }
+            return null
+        })
+        
+    }
+
+    startUp(){
+        for(const channel in this._channels){
+            this._application.log('Ipc', 'Starting IPC channel: ' + channel)
+
+            if(this._channels[channel].startUp)
+                this._channels[channel].startUp()
+        }
+    }
+
+    onUserLoaded(){
+        for(const channel in this._channels){
+            if(this._channels[channel].onUserLoaded){
+                this._application.log('Ipc', 'Loading startup data for IPC channel: ' + channel)
+                this._channels[channel].onUserLoaded()
+            }
+        }
+    }
+}

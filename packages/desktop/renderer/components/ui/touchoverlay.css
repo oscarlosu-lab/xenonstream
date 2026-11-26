@@ -1,0 +1,95 @@
+.touch-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    pointer-events: none;
+}
+
+.touch-zone {
+    position: absolute;
+    display: flex;
+    gap: 12px;
+    pointer-events: none;
+}
+
+/*
+ * "Inner" zones (left-inner, right-inner) anchor from the bottom and grow
+ * upward - the primary movement/action controls a thumb rests on.
+ * "Outer" zones (left-outer, right-outer) anchor from the top and grow
+ * downward instead, so a multi-item stack never has to guess which
+ * direction to grow in and can't collide with the inner zone growing up
+ * from the opposite edge. top-right is the one deliberate exception -
+ * reserved for rare-use controls (e.g. Menu/View, handbrake) that should
+ * require lifting a thumb to reach.
+ */
+.touch-zone-left-inner {
+    bottom: 6%;
+    left: 6%;
+}
+
+.touch-zone-left-outer {
+    top: 10%;
+    left: 8%;
+    flex-direction: column;
+}
+
+.touch-zone-right-inner {
+    bottom: 6%;
+    right: 6%;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+}
+
+.touch-zone-right-outer {
+    top: 16%;
+    right: 6%;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.touch-zone-top-right {
+    top: 4%;
+    right: 6%;
+}
+
+.touch-control {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.18);
+    border: 2px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    user-select: none;
+    touch-action: none;
+}
+
+.touch-stick {
+    width: 96px;
+    height: 96px;
+}
+
+.touch-stick-nub {
+    width: 40%;
+    height: 40%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+}
+
+.touch-dpad {
+    width: 84px;
+    height: 84px;
+    border-radius: 8px;
+    font-size: 22px;
+}
+
+.touch-button {
+    width: 56px;
+    height: 56px;
+    font-size: 16px;
+}

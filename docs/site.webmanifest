@@ -1,0 +1,17 @@
+{
+  "name": "XenonStream — Xbox Remote Play & xCloud Client",
+  "short_name": "XenonStream",
+  "description": "Open-source cross-platform Xbox Cloud Gaming (xCloud) and Xbox Remote Play client for Windows, Linux, Steam Deck, and macOS.",
+  "start_url": "/xenonstream/",
+  "display": "standalone",
+  "background_color": "#060a0d",
+  "theme_color": "#060a0d",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

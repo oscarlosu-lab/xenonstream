@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XenonStream — 1440p Xbox Remote Play &amp; xCloud Client (Windows, Linux, Steam Deck &amp; macOS)</title>
+  <meta name="description" content="Download XenonStream v1.0.0 for Windows, Linux (AppImage/DEB/Flatpak), Steam Deck &amp; macOS: open-source Xbox Cloud Gaming (xCloud) and Xbox Remote Play client with Obsidian Neon UI, 1440p, HEVC/AV1, Linux VA-API &amp; Wayland, Clarity Boost, LAN low-latency, DPAPI/Keychain auth, 4-player co-op &amp; draggable FPS HUD.">
+  <meta name="keywords" content="XenonStream, Xbox Remote Play 1440p, xCloud Linux Steam Deck, Xbox Cloud Gaming Windows macOS, Xbox Series X streaming, HEVC AV1 VA-API Wayland, Clarity Boost, XenonStream oscarlosu-lab, Xbox FPS overlay, ROG Ally xCloud, Legion Go Xbox Remote Play, Flatpak Xbox streaming">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="author" content="oscarlosu-lab">
+  <meta name="theme-color" content="#060a0d">
+  <link rel="canonical" href="https://oscarlosu-lab.github.io/xenonstream/">
+  <link rel="alternate" hreflang="en" href="https://oscarlosu-lab.github.io/xenonstream/?lang=en">
+  <link rel="alternate" hreflang="es" href="https://oscarlosu-lab.github.io/xenonstream/?lang=es">
+  <link rel="alternate" hreflang="x-default" href="https://oscarlosu-lab.github.io/xenonstream/">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="XenonStream — 1440p Xbox Remote Play &amp; xCloud Client">
+  <meta property="og:description" content="Open-source cross-platform client for Xbox Cloud Gaming &amp; Remote Play on Windows, Linux, Steam Deck &amp; macOS. 1440p, HEVC/AV1, VA-API/Wayland, Clarity Boost, LAN low-latency, DPAPI/Keychain auth, 4-player co-op &amp; draggable FPS HUD.">
+  <meta property="og:url" content="https://oscarlosu-lab.github.io/xenonstream/">
+  <meta property="og:site_name" content="XenonStream">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta property="og:image" content="https://oscarlosu-lab.github.io/xenonstream/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="XenonStream — 1440p Xbox Remote Play &amp; xCloud Client">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="XenonStream v1.0.0 — 1440p Xbox Remote Play &amp; xCloud">
+  <meta name="twitter:description" content="1440p streaming, HEVC/AV1 codecs, Linux VA-API &amp; Wayland, macOS mic entitlements, Clarity Boost, LAN low-latency, instant-collapse bar &amp; draggable real-time FPS HUD.">
+  <meta name="twitter:image" content="https://oscarlosu-lab.github.io/xenonstream/og-image.png">
+
+  <!-- Structured Data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "XenonStream",
+    "alternateName": ["XenonStream Xbox Client", "XenonStream xCloud", "XenonStream Remote Play"],
+    "operatingSystem": "Windows 10, Windows 11, Linux, SteamOS, macOS",
+    "applicationCategory": "GameApplication",
+    "softwareVersion": "1.0.0",
+    "url": "https://oscarlosu-lab.github.io/xenonstream/",
+    "downloadUrl": "https://github.com/oscarlosu-lab/xenonstream/releases/latest",
+    "releaseNotes": "https://github.com/oscarlosu-lab/xenonstream/releases/tag/v1.0.0",
+    "screenshot": "https://oscarlosu-lab.github.io/xenonstream/og-image.png",
+    "license": "https://opensource.org/licenses/MIT",
+    "author": {
+      "@type": "Person",
+      "name": "oscarlosu-lab",
+      "url": "https://github.com/oscarlosu-lab"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "1440p Xbox Remote Play and xCloud streaming across Windows, Linux, Steam Deck, and macOS",
+      "HEVC (H.265), AV1, and H.264 High codec selection with RTX/FEC resilience",
+      "Linux VA-API hardware decoding and Wayland support via AppImage, DEB, and Flatpak",
+      "macOS Universal DMG with microphone entitlements",
+      "Clarity Boost GPU sharpening and Obsidian Neon Emerald-Cyan UI",
+      "Private-IPv4 host-first LAN low-latency ICE routing and configurable Remote Play public port",
+      "Instant-collapse top stream bar chevron and draggable 36px green WebRTC FPS overlay",
+      "DPAPI / Keychain encrypted multi-account token storage, QR login, and 401 refresh",
+      "4-player local co-op, touch overlay, custom button remapping, Discord RPC, and 13 languages"
+    ]
+  }
+  </script>
+
+  <!-- Structured Data: WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "XenonStream",
+    "url": "https://oscarlosu-lab.github.io/xenonstream/",
+    "inLanguage": ["en", "es"]
+  }
+  </script>
+
+  <!-- Structured Data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How is XenonStream different from the official Xbox app or legacy clients?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "XenonStream v1.0.0 runs natively on Windows, Linux (VA-API + Wayland + Flatpak), Steam Deck, and macOS, adding 1440p streaming, HEVC/AV1 codec selection, Clarity Boost, LAN host-first UDP routing, configurable Remote Play ports, encrypted multi-account storage, 4-player co-op, an instant-collapse top bar chevron, and a draggable real-time FPS HUD."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does XenonStream support 1440p and HEVC or AV1 on Xbox Remote Play and xCloud?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. You can select 720p, 1080p, or 1440p and prioritize H.264, HEVC (H.265), or AV1 with automatic H.264 High fallback and preserved RTX/FEC packet recovery."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does XenonStream work on Steam Deck, Linux, macOS, and Windows handhelds?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. XenonStream ships native builds for Windows (NSIS .exe & portable .zip), Linux & Steam Deck (AppImage, DEB, and Flatpak with VA-API + Wayland), and macOS (Universal DMG with microphone entitlements), plus built-in gamepad UI navigation and touch overlays for ROG Ally and Legion Go."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the FPS counter show real live FPS and can I hide the top bar instantly?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. XenonStream polls WebRTC inbound-rtp video statistics every second to render the real decoded framesPerSecond in a draggable 36px green HUD, and includes a compact chevron tab below the stream bar to hide or restore the menu immediately."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How are Microsoft and Xbox login tokens stored securely?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "All authentication tokens are encrypted at rest using Electron safeStorage (Windows DPAPI / macOS Keychain / Linux secret service, enc:v1:), with automatic 401 refresh, scannable Microsoft QR login, and isolated --profile=<name> instances."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is XenonStream free and open source?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, XenonStream is 100% free and MIT-licensed. Full source code, 90 automated tests, and cross-platform GitHub Actions workflows are open on GitHub."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #060a0d;
+      --bg-elev: rgba(7, 13, 18, 0.84);
+      --bg-card: linear-gradient(155deg, rgba(15, 25, 34, 0.82), rgba(8, 14, 20, 0.90));
+      --border: rgba(74, 222, 128, 0.18);
+      --border-strong: rgba(74, 222, 128, 0.52);
+      --emerald: #10b981;
+      --neon: #4ade80;
+      --cyan: #22d3ee;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --kofi: #ff5e5b;
+      --radius: 16px;
+      --maxw: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(920px 540px at 12% -8%, rgba(16, 185, 129, 0.24), transparent 62%),
+        radial-gradient(760px 480px at 90% 105%, rgba(6, 182, 212, 0.18), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(22px);
+      background: var(--bg-elev);
+      border-bottom: 1px solid rgba(52, 211, 153, 0.22);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #10b981 0%, #4ade80 45%, #22d3ee 100%);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 70px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.38));
+    }
+
+    .accent {
+      color: var(--cyan);
+      text-shadow: 0 0 12px rgba(34, 211, 238, 0.45);
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #4ade80, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    nav { display: flex; align-items: center; gap: 8px; }
+    nav a {
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 999px;
+      transition: all 0.16s ease;
+    }
+    nav a:hover { color: #ffffff; background: rgba(255, 255, 255, 0.06); }
+
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: rgba(15, 25, 34, 0.8);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .pill-btn:hover { border-color: var(--cyan); transform: translateY(-1px); }
+    .pill-kofi { border-color: rgba(255, 94, 91, 0.45); background: rgba(255, 94, 91, 0.14); color: #ffd4d3; }
+    .pill-kofi:hover { background: rgba(255, 94, 91, 0.26); border-color: var(--kofi); }
+
+    /* Hero */
+    .hero { padding: 64px 0 44px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 38px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #6ee7b7;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(52, 211, 153, 0.32);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(2.1rem, 4.1vw, 3.35rem);
+      line-height: 1.08;
+      margin: 0 0 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-sub {
+      font-size: 1.04rem;
+      color: #cbd5e1;
+      margin: 0 0 24px;
+      max-width: 60ch;
+    }
+
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: linear-gradient(135deg, #10b981 0%, #059669 55%, #0891b2 100%);
+      border: 1px solid rgba(110, 231, 183, 0.55);
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.34);
+      transition: all 0.16s ease;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 55%, #06b6d4 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(16, 185, 129, 0.45);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      color: var(--text);
+      transition: all 0.16s ease;
+    }
+    .btn-secondary:hover { background: rgba(51, 65, 85, 0.95); border-color: var(--cyan); transform: translateY(-1px); }
+
+    .hero-specs { display: flex; flex-wrap: wrap; gap: 8px; }
+    .spec-chip {
+      font-size: 12px;
+      font-weight: 600;
+      color: #a7f3d0;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(74, 222, 128, 0.25);
+    }
+
+    /* Interactive Stream Preview matching app */
+    .stream-stage {
+      position: relative;
+      height: 360px;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(16, 185, 129, 0.2), transparent 62%),
+        linear-gradient(160deg, #09131a, #05090d);
+      border: 1px solid rgba(74, 222, 128, 0.32);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+
+    .stage-topbar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(7, 13, 18, 0.84);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(74, 222, 128, 0.22);
+      font-size: 12px;
+      color: #cbd5e1;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+      z-index: 4;
+    }
+
+    .stage-topbar.collapsed {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .stage-chevron {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 40px;
+      z-index: 6;
+      width: 48px;
+      height: 18px;
+      border-radius: 0 0 10px 10px;
+      border: 1px solid rgba(74, 222, 128, 0.55);
+      border-top: none;
+      background: rgba(7, 13, 18, 0.9);
+      color: #4ade80;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: top 0.25s ease, background 0.16s ease;
+    }
+
+    .stage-chevron.collapsed {
+      top: 0;
+      opacity: 0.72;
+    }
+    .stage-chevron:hover { opacity: 1; background: rgba(16, 185, 129, 0.28); color: #ffffff; }
+
+    .stage-badges { display: flex; gap: 6px; }
+    .stage-tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      color: #6ee7b7;
+    }
+
+    .stage-body {
+      position: relative;
+      height: calc(100% - 40px);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .nexus-ring {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      border: 2px solid rgba(34, 211, 238, 0.55);
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.28), rgba(7, 13, 18, 0.9));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 38px rgba(16, 185, 129, 0.35);
+      margin: 0 auto 12px;
+    }
+
+    .nexus-ring img { width: 64px; height: 64px; border-radius: 12px; }
+
+    .stage-hint {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 34ch;
+      margin: 0 auto;
+    }
+
+    .fps-demo {
+      position: absolute;
+      left: 16px;
+      top: 28px;
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1;
+      color: #4ade80;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      padding: 4px 8px;
+      border-radius: 8px;
+      z-index: 10;
+    }
+    .fps-demo:active { cursor: grabbing; background: rgba(16, 185, 129, 0.14); }
+
+    /* Sections */
+    section { padding: 48px 0; }
+    .section-head { margin-bottom: 26px; }
+    .section-head h2 { font-size: clamp(1.45rem, 2.5vw, 2rem); margin: 0 0 8px; }
+    .section-head p { margin: 0; color: var(--muted); max-width: 68ch; }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: border-color 0.18s ease, transform 0.18s ease;
+    }
+    .card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+    .card-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cyan);
+      margin-bottom: 8px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 1.06rem; }
+    .card p { margin: 0; font-size: 0.92rem; color: #cbd5e1; opacity: 0.9; }
+
+    /* Downloads Grid */
+    .os-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .os-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .os-card h3 { margin: 0; font-size: 1.1rem; }
+    .os-card p { margin: 0; font-size: 0.9rem; color: var(--muted); }
+    .os-formats { display: flex; flex-wrap: wrap; gap: 8px; }
+    .fmt-chip {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      color: #a5f3fc;
+    }
+
+    /* Comparison Table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: rgba(8, 14, 20, 0.88);
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 660px; }
+    th, td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(74, 222, 128, 0.12);
+      font-size: 14px;
+    }
+    th {
+      background: rgba(16, 185, 129, 0.12);
+      color: #ecfdf5;
+      font-weight: 700;
+    }
+    .yes { color: var(--neon); font-weight: 700; }
+    .no { color: #94a3b8; }
+
+    /* FAQ */
+    .faq-list { display: grid; gap: 12px; }
+    details {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 20px;
+    }
+    summary { cursor: pointer; font-weight: 700; color: #f8fafc; }
+    details p { margin: 10px 0 0; color: #cbd5e1; font-size: 0.94rem; }
+
+    /* Community */
+    .community-box {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 28px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(6, 182, 212, 0.12));
+      border: 1px solid rgba(74, 222, 128, 0.32);
+    }
+    .community-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    /* Footer */
+    footer {
+      padding: 32px 0 44px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a:hover { color: var(--cyan); }
+
+    @media (max-width: 960px) {
+      .hero-grid, .cards-grid, .os-grid { grid-template-columns: 1fr; }
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav-wrap">
+      <a class="brand" href="#top" aria-label="XenonStream Home">
+        <img src="icon.png" alt="XenonStream Icon">
+        <span>XENON<span class="accent">STREAM</span></span>
+      </a>
+      <nav aria-label="Primary Navigation">
+        <a href="#downloads" data-i18n="nav_downloads">Downloads</a>
+        <a href="#features" data-i18n="nav_features">Features</a>
+        <a href="#comparison" data-i18n="nav_compare">Comparison</a>
+        <a href="#faq" data-i18n="nav_faq">FAQ</a>
+        <a href="https://github.com/oscarlosu-lab/xenonstream" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+      <div class="nav-actions">
+        <button id="langToggle" class="pill-btn" type="button" aria-label="Switch language">ES / EN</button>
+        <a class="pill-btn pill-kofi" href="https://ko-fi.com/oscarlosu" target="_blank" rel="noopener">☕ Ko-fi</a>
+        <a class="pill-btn" href="https://github.com/oscarlosu-lab/xenonstream/releases/latest" target="_blank" rel="noopener" data-i18n="nav_download">Download</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow" data-i18n="hero_eyebrow">Xbox Remote Play &amp; xCloud • Windows, Linux, Steam Deck &amp; macOS</span>
+          <h1 data-i18n="hero_title">Next-Gen <span class="gradient-text">1440p Xbox Streaming</span> Everywhere.</h1>
+          <p class="hero-sub" data-i18n="hero_sub">
+            Open-source cross-platform client for Xbox Cloud Gaming (xCloud) and Xbox Remote Play on Windows 10/11, Linux (VA-API + Wayland), Steam Deck, and macOS. Features the Obsidian Neon UI, HEVC/AV1 decoding, Clarity Boost, LAN low-latency routing, encrypted multi-account storage, instant-collapse toolbar, and draggable FPS HUD.
+          </p>
+          <div class="cta-row">
+            <a class="btn-primary" href="https://github.com/oscarlosu-lab/xenonstream/releases/latest" target="_blank" rel="noopener" data-i18n="cta_installer">Download v1.0.0</a>
+            <a class="btn-secondary" href="#downloads" data-i18n="cta_zip">All OS Builds (Win / Linux / Mac)</a>
+            <a class="btn-secondary" href="https://github.com/oscarlosu-lab/xenonstream" target="_blank" rel="noopener" data-i18n="cta_repo">View Source on GitHub</a>
+          </div>
+          <div class="hero-specs">
+            <span class="spec-chip">Windows / Linux / macOS</span>
+            <span class="spec-chip">720p / 1080p / 1440p</span>
+            <span class="spec-chip">H.264 / HEVC / AV1 + VA-API</span>
+            <span class="spec-chip">Electron 45.3.4</span>
+            <span class="spec-chip">4-Player Co-op</span>
+          </div>
+        </div>
+
+        <div class="stream-stage" id="demoStage" aria-label="Interactive XenonStream Preview">
+          <div class="stage-topbar" id="demoTopbar">
+            <span>XenonStream • Xbox Series X (LAN)</span>
+            <div class="stage-badges">
+              <span class="stage-tag">1440p</span>
+              <span class="stage-tag">HEVC</span>
+              <span class="stage-tag">host-first UDP</span>
+            </div>
+          </div>
+          <button type="button" id="demoChevron" class="stage-chevron" title="Hide / Show menu bar" aria-label="Hide or show menu bar">▲</button>
+          <div class="stage-body">
+            <div id="fpsDemo" class="fps-demo" title="Drag me anywhere">60FPS</div>
+            <div>
+              <div class="nexus-ring"><img src="icon.png" alt="XenonStream"></div>
+              <p class="stage-hint" data-i18n="stage_hint">Interactive preview: click the <strong>▲</strong> chevron tab to collapse the top bar instantly, or drag the green <strong>60FPS</strong> HUD anywhere inside the frame.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="downloads">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="dl_title">Cross-Platform Releases (v1.0.0)</h2>
+          <p data-i18n="dl_sub">Built automatically on GitHub Actions for every desktop and handheld gaming platform.</p>
+        </div>
+        <div class="os-grid">
+          <div class="os-card">
+            <div>
+              <h3>Windows 10 / 11 &amp; Handhelds</h3>
+              <p data-i18n="dl_win">Native installer &amp; portable ZIP for PCs, ASUS ROG Ally, Lenovo Legion Go, and MSI Claw with DPAPI token encryption and ABOVE_NORMAL priority.</p>
+            </div>
+            <div class="os-formats">
+              <span class="fmt-chip">Setup .exe</span>
+              <span class="fmt-chip">Portable .zip</span>
+            </div>
+            <a class="btn-primary" href="https://github.com/oscarlosu-lab/xenonstream/releases/latest" target="_blank" rel="noopener" data-i18n="dl_btn">Get Windows Build</a>
+          </div>
+
+          <div class="os-card">
+            <div>
+              <h3>Linux &amp; Steam Deck (SteamOS)</h3>
+              <p data-i18n="dl_linux">Hardware-accelerated VA-API decoding and native Wayland support across AppImage, Debian/Ubuntu DEB, and sandboxed Flatpak.</p>
+            </div>
+            <div class="os-formats">
+              <span class="fmt-chip">.AppImage</span>
+              <span class="fmt-chip">.deb</span>
+              <span class="fmt-chip">.flatpak</span>
+            </div>
+            <a class="btn-primary" href="https://github.com/oscarlosu-lab/xenonstream/releases/latest" target="_blank" rel="noopener" data-i18n="dl_btn_linux">Get Linux / Deck Build</a>
+          </div>
+
+          <div class="os-card">
+            <div>
+              <h3>macOS (Apple Silicon &amp; Intel)</h3>
+              <p data-i18n="dl_mac">Universal macOS DMG with hardened microphone entitlements, native permission prompts, and Keychain token encryption.</p>
+            </div>
+            <div class="os-formats">
+              <span class="fmt-chip">Universal .dmg</span>
+            </div>
+            <a class="btn-primary" href="https://github.com/oscarlosu-lab/xenonstream/releases/latest" target="_blank" rel="noopener" data-i18n="dl_btn_mac">Get macOS Build</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="feat_title">Engineered for Serious Cross-Platform Xbox Streaming</h2>
+          <p data-i18n="feat_sub">Every subsystem tuned for sharp video, minimal latency, and clean Obsidian Neon ergonomics.</p>
+        </div>
+        <div class="cards-grid">
+          <article class="card">
+            <div class="card-kicker" data-i18n="f1_k">Video &amp; Codecs</div>
+            <h3 data-i18n="f1_t">1440p, HEVC / AV1 &amp; Clarity Boost</h3>
+            <p data-i18n="f1_d">Unlock 720p, 1080p, and 1440p streaming with unlimited bitrate mode, H.264 / HEVC (H.265) / AV1 preference, preserved RTX/FEC packet recovery, and real-time Clarity Boost GPU sharpening.</p>
+          </article>
+          <article class="card">
+            <div class="card-kicker" data-i18n="f2_k">Obsidian Neon UX</div>
+            <h3 data-i18n="f2_t">Instant-Collapse Bar &amp; Draggable FPS HUD</h3>
+            <p data-i18n="f2_d">Live WebRTC framesPerSecond readout rendered above the stream in bold green (60FPS) with saved coordinates, plus a compact ▲/▼ chevron to hide or show the top bar immediately.</p>
+          </article>
+          <article class="card">
+            <div class="card-kicker" data-i18n="f3_k">Linux, Deck &amp; macOS</div>
+            <h3 data-i18n="f3_t">VA-API, Wayland &amp; macOS Mic Support</h3>
+            <p data-i18n="f3_d">Native Linux VA-API video decoding and Wayland ozone flags, Flatpak bundle with Mesa VA-API drivers, and macOS Universal DMG with microphone entitlements.</p>
+          </article>
+          <article class="card">
+            <div class="card-kicker" data-i18n="f4_k">LAN Performance</div>
+            <h3 data-i18n="f4_t">Host-First ICE &amp; Custom Remote Ports</h3>
+            <p data-i18n="f4_d">Prioritizes private-IPv4 host UDP routes with TCP fallback, low-latency playout hints, configurable Remote Play public ports per console, and Windows ABOVE_NORMAL priority.</p>
+          </article>
+          <article class="card">
+            <div class="card-kicker" data-i18n="f5_k">Security &amp; Auth</div>
+            <h3 data-i18n="f5_t">Encrypted Multi-Account &amp; QR Login</h3>
+            <p data-i18n="f5_d">Tokens are encrypted at rest via Electron safeStorage (DPAPI / Keychain, enc:v1:), auto-refreshed on 401 expiry, and switchable across accounts or scannable via Microsoft QR code.</p>
+          </article>
+          <article class="card">
+            <div class="card-kicker" data-i18n="f6_k">Input &amp; Diagnostics</div>
+            <h3 data-i18n="f6_t">4-Player Co-op, Discord RPC &amp; 13 Locales</h3>
+            <p data-i18n="f6_d">Opt-in 4-controller co-op, custom remapping, M&amp;K pointer lock, touch overlays, instant PNG screenshots, isolated --profile instances, Discord Rich Presence, and 13 languages.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="comparison">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="cmp_title">XenonStream v1.0.0 vs Legacy Clients &amp; Official Xbox App</h2>
+          <p data-i18n="cmp_sub">Why players across Windows, Linux, Steam Deck, and macOS choose XenonStream for Remote Play and Xbox Cloud Gaming.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-i18n="th_feature">Capability</th>
+                <th>XenonStream v1.0.0</th>
+                <th data-i18n="th_legacy">Legacy Clients</th>
+                <th data-i18n="th_official">Official Xbox App</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-i18n="c1">1440p &amp; Unlimited Bitrate</td>
+                <td class="yes">Yes (720p / 1080p / 1440p)</td>
+                <td class="no">1080p cap</td>
+                <td class="no">1080p cap</td>
+              </tr>
+              <tr>
+                <td data-i18n="c2">HEVC (H.265) / AV1 Codec Selector</td>
+                <td class="yes">Yes + RTX/FEC preserved</td>
+                <td class="no">No</td>
+                <td class="no">No user selector</td>
+              </tr>
+              <tr>
+                <td data-i18n="c3">Linux VA-API, Wayland &amp; macOS Universal</td>
+                <td class="yes">Yes (AppImage / DEB / Flatpak / DMG)</td>
+                <td class="no">Partial / Manual</td>
+                <td class="no">Windows only</td>
+              </tr>
+              <tr>
+                <td data-i18n="c4">Draggable FPS HUD &amp; Instant-Collapse Bar</td>
+                <td class="yes">Yes (36px green + ▲/▼ chevron)</td>
+                <td class="no">No</td>
+                <td class="no">No</td>
+              </tr>
+              <tr>
+                <td data-i18n="c5">LAN Host-First UDP &amp; Custom Remote Port</td>
+                <td class="yes">Yes (per-console port + priority)</td>
+                <td class="no">Default ICE / 9002</td>
+                <td class="no">Closed</td>
+              </tr>
+              <tr>
+                <td data-i18n="c6">Encrypted Multi-Account, 4P Co-op &amp; Profiles</td>
+                <td class="yes">Yes (safeStorage + QR + --profile)</td>
+                <td class="no">Plaintext / Single</td>
+                <td class="no">System account only</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-head">
+          <h2 data-i18n="faq_title">Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-list">
+          <details open>
+            <summary data-i18n="q1">How is XenonStream different from the official Xbox app or legacy clients?</summary>
+            <p data-i18n="a1">XenonStream is a standalone cross-platform client shipping 1440p streaming, HEVC/AV1 decoding, Linux VA-API &amp; Wayland, macOS Universal DMG + mic entitlements, configurable Remote Play ports, Clarity Boost, LAN host-first ICE, encrypted multi-account tokens, 4-player co-op, 13 languages, Electron 45, an instant-collapse top bar, and a draggable real-time FPS HUD.</p>
+          </details>
+          <details>
+            <summary data-i18n="q2">Does it work on Steam Deck, Linux, macOS, and Windows handhelds?</summary>
+            <p data-i18n="a2">Yes. It runs natively on Windows 10/11 (including ROG Ally, Legion Go, and MSI Claw), Linux / SteamOS (Flatpak, AppImage, DEB), and macOS (Universal DMG) with gamepad UI navigation, vibration support, custom button remapping, and Clarity Boost.</p>
+          </details>
+          <details>
+            <summary data-i18n="q3">Does the FPS counter show real live FPS and can I hide the top bar instantly?</summary>
+            <p data-i18n="a3">Yes. XenonStream polls WebRTC inbound-rtp video statistics every second to display the actual decoded framesPerSecond in a draggable overlay, and provides a compact ▲/▼ chevron button right below the stream bar to hide or restore it immediately.</p>
+          </details>
+          <details>
+            <summary data-i18n="q4">Is XenonStream free and open source?</summary>
+            <p data-i18n="a4">Yes, XenonStream is 100% free and MIT-licensed. You can inspect the full source code, 90 automated tests, and cross-platform CI workflows on GitHub.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="community">
+      <div class="container">
+        <div class="community-box">
+          <div>
+            <h2 style="margin:0 0 8px" data-i18n="com_title">Support Development &amp; Join the Community</h2>
+            <p style="margin:0;color:#cbd5e1" data-i18n="com_sub">Star XenonStream on GitHub, report issues, or support ongoing cross-platform performance and codec updates on Ko-fi.</p>
+          </div>
+          <div class="community-actions">
+            <a class="btn-secondary" href="https://github.com/oscarlosu-lab/xenonstream/stargazers" target="_blank" rel="noopener">★ Star on GitHub</a>
+            <a class="btn-primary" style="background:linear-gradient(135deg,#ff5e5b,#d94845);border-color:rgba(255,150,148,0.6);box-shadow:0 10px 26px rgba(255,94,91,0.32)" href="https://ko-fi.com/oscarlosu" target="_blank" rel="noopener">☕ Support on Ko-fi</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <div>
+        <strong>XenonStream</strong> • v1.0.0 • MIT License<br>
+        <span data-i18n="disclaimer">Not affiliated with Microsoft, Xbox, or Moonlight. All rights belong to their respective owners.</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/oscarlosu-lab/xenonstream" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/oscarlosu-lab/xenonstream/releases/tag/v1.0.0" target="_blank" rel="noopener">Releases</a>
+        <a href="https://ko-fi.com/oscarlosu" target="_blank" rel="noopener">Ko-fi</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const stage = document.getElementById('demoStage');
+      const hud = document.getElementById('fpsDemo');
+      const topbar = document.getElementById('demoTopbar');
+      const chevron = document.getElementById('demoChevron');
+      let drag = null;
+
+      chevron.addEventListener('click', () => {
+        const collapsed = topbar.classList.toggle('collapsed');
+        chevron.classList.toggle('collapsed', collapsed);
+        chevron.textContent = collapsed ? '▼' : '▲';
+      });
+
+      hud.addEventListener('pointerdown', (e) => {
+        const stageRect = stage.getBoundingClientRect();
+        const hudRect = hud.getBoundingClientRect();
+        drag = {
+          id: e.pointerId,
+          offX: e.clientX - hudRect.left,
+          offY: e.clientY - hudRect.top,
+          stageRect,
+          w: hudRect.width,
+          h: hudRect.height
+        };
+        hud.setPointerCapture(e.pointerId);
+      });
+
+      hud.addEventListener('pointermove', (e) => {
+        if (!drag || drag.id !== e.pointerId) return;
+        const x = Math.min(Math.max(8, e.clientX - drag.stageRect.left - drag.offX), drag.stageRect.width - drag.w - 8);
+        const y = Math.min(Math.max(46, e.clientY - drag.stageRect.top - drag.offY), drag.stageRect.height - drag.h - 8);
+        hud.style.left = Math.round(x) + 'px';
+        hud.style.top = Math.round(y) + 'px';
+      });
+
+      const endDrag = (e) => {
+        if (!drag || drag.id !== e.pointerId) return;
+        try { hud.releasePointerCapture(e.pointerId); } catch (_) {}
+        drag = null;
+      };
+      hud.addEventListener('pointerup', endDrag);
+      hud.addEventListener('pointercancel', endDrag);
+
+      const es = {
+        nav_downloads: 'Descargas',
+        nav_features: 'Características',
+        nav_compare: 'Comparativa',
+        nav_faq: 'Preguntas',
+        nav_download: 'Descargar',
+        hero_eyebrow: 'Xbox Remote Play y xCloud • Windows, Linux, Steam Deck y macOS',
+        hero_title: 'Streaming Xbox en <span class="gradient-text">1440p de nueva generación</span> en cualquier sistema.',
+        hero_sub: 'Cliente open-source multiplataforma para Xbox Cloud Gaming (xCloud) y Xbox Remote Play en Windows 10/11, Linux (VA-API + Wayland), Steam Deck y macOS. Incluye interfaz Obsidian Neon, decodificación HEVC/AV1, Clarity Boost, baja latencia en LAN, cifrado multi-cuenta, barra plegable al instante y HUD FPS arrastrable.',
+        cta_installer: 'Descargar v1.0.0',
+        cta_zip: 'Todas las Plataformas (Win / Linux / Mac)',
+        cta_repo: 'Ver Código en GitHub',
+        stage_hint: 'Vista previa interactiva: pulsa la flechita <strong>▲</strong> para esconder la barra superior al instante, o arrastra el contador verde <strong>60FPS</strong> por todo el visor.',
+        dl_title: 'Descargas Multiplataforma (v1.0.0)',
+        dl_sub: 'Compilación automática en GitHub Actions para cada sistema de escritorio y consola portátil.',
+        dl_win: 'Instalador NSIS y ZIP portable para PC, ASUS ROG Ally, Lenovo Legion Go y MSI Claw con cifrado DPAPI y prioridad ABOVE_NORMAL.',
+        dl_linux: 'Decodificación por hardware VA-API y soporte nativo Wayland en AppImage, paquete DEB y Flatpak para Steam Deck.',
+        dl_mac: 'DMG Universal para Apple Silicon e Intel con permisos de micrófono y cifrado de tokens en Keychain.',
+        dl_btn: 'Descargar para Windows',
+        dl_btn_linux: 'Descargar para Linux / Deck',
+        dl_btn_mac: 'Descargar para macOS',
+        feat_title: 'Diseñado para exprimir Xbox en cualquier sistema',
+        feat_sub: 'Cada subsistema optimizado para máxima nitidez, mínima latencia y ergonomía Obsidian Neon.',
+        f1_k: 'Vídeo y Códecs',
+        f1_t: '1440p, HEVC / AV1 y Clarity Boost',
+        f1_d: 'Streaming en 720p, 1080p y 1440p sin tope artificial de bitrate, selector H.264 / HEVC (H.265) / AV1 con recuperación RTX/FEC intacta y nitidez GPU Clarity Boost.',
+        f2_k: 'UX Obsidian Neon',
+        f2_t: 'Barra plegable al instante y HUD FPS',
+        f2_d: 'Lectura real por WebRTC (framesPerSecond) sobre el vídeo en verde (60FPS) con posición guardada, más flechita ▲/▼ para ocultar o mostrar la barra al instante.',
+        f3_k: 'Linux, Deck y macOS',
+        f3_t: 'VA-API, Wayland y Micrófono macOS',
+        f3_d: 'Decodificación VA-API y flags nativos de Wayland en Linux, Flatpak con drivers Mesa VA-API y DMG Universal en macOS con permisos de micrófono.',
+        f4_k: 'Rendimiento LAN',
+        f4_t: 'Ruta ICE host-first y Puerto Propio',
+        f4_d: 'Prioriza rutas UDP locales en IPv4 privada con respaldo TCP, hints WebRTC de mínima latencia, puerto público de Remote Play por consola y prioridad ABOVE_NORMAL.',
+        f5_k: 'Seguridad y Auth',
+        f5_t: 'Multi-cuenta cifrada y login con QR',
+        f5_d: 'Tokens cifrados con safeStorage (DPAPI / Keychain, enc:v1:), refresco automático ante errores 401, cambio rápido de cuenta y login escaneando QR Microsoft.',
+        f6_k: 'Entrada y Diagnóstico',
+        f6_t: 'Co-op 4 mandos, Discord RPC y 13 idiomas',
+        f6_d: 'Cooperativo local de hasta 4 mandos, remapeo personalizado, ratón/teclado con pointer lock, touch overlay, capturas PNG, --profile aislado, Discord RPC y 13 idiomas.',
+        cmp_title: 'XenonStream v1.0.0 frente a Clientes Clásicos y App Oficial Xbox',
+        cmp_sub: 'Por qué los jugadores de Windows, Linux, Steam Deck y macOS eligen XenonStream para Remote Play y xCloud.',
+        th_feature: 'Función',
+        th_legacy: 'Clientes Clásicos',
+        th_official: 'App Oficial Xbox',
+        faq_title: 'Preguntas Frecuentes',
+        q1: '¿En qué se diferencia XenonStream de la App oficial o clientes clásicos?',
+        a1: 'XenonStream es un cliente multiplataforma independiente con streaming 1440p, códecs HEVC/AV1, VA-API + Wayland en Linux, DMG Universal en macOS con micrófono, puerto configurable de Remote Play, Clarity Boost, ruta LAN host-first, cifrado multi-cuenta, co-op de 4 mandos, 13 idiomas, Electron 45, barra superior plegable al instante y HUD FPS real arrastrable.',
+        q2: '¿Funciona en Steam Deck, Linux, macOS y portátiles Windows?',
+        a2: 'Sí. Funciona de forma nativa en Windows 10/11 (ROG Ally, Legion Go, MSI Claw), Linux / SteamOS (Flatpak, AppImage, DEB) y macOS (DMG Universal) con navegación por mando, vibración, remapeo de botones y Clarity Boost.',
+        q3: '¿El contador de FPS muestra los FPS reales y puedo esconder la barra superior al instante?',
+        a3: 'Sí. XenonStream consulta cada segundo las estadísticas WebRTC del stream para mostrar el framesPerSecond real en un cuadro verde arrastrable, e incluye una flechita ▲/▼ justo debajo de la barra superior para ocultarla o mostrarla al instante.',
+        q4: '¿Es gratuito y de código abierto?',
+        a4: 'Sí, XenonStream es 100% gratuito bajo licencia MIT. Puedes revisar todo el código fuente, los 90 tests automatizados y los workflows en GitHub.',
+        com_title: 'Apoya el proyecto y únete a la comunidad',
+        com_sub: 'Deja una estrella en GitHub, reporta sugerencias o apoya nuevas mejoras multiplataforma en Ko-fi.',
+        disclaimer: 'Sin afiliación con Microsoft, Xbox ni Moonlight. Todas las marcas pertenecen a sus respectivos propietarios.'
+      };
+
+      const en = {};
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        en[el.dataset.i18n] = el.innerHTML;
+      });
+
+      const paramLang = new URLSearchParams(window.location.search).get('lang');
+      let current = (paramLang === 'es' || paramLang === 'en')
+        ? paramLang
+        : ((navigator.language || 'en').toLowerCase().startsWith('es') ? 'es' : 'en');
+
+      const applyLang = (lang) => {
+        current = lang;
+        document.documentElement.lang = lang;
+        const dict = lang === 'es' ? es : en;
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
+          const key = el.dataset.i18n;
+          if (dict[key]) el.innerHTML = dict[key];
+        });
+      };
+
+      applyLang(current);
+      document.getElementById('langToggle').addEventListener('click', () => {
+        applyLang(current === 'en' ? 'es' : 'en');
+      });
+    })();
+  </script>
+</body>
+</html>

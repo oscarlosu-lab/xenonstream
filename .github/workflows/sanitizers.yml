@@ -1,0 +1,76 @@
+name: Desktop Sanitizers
+
+on:
+  push:
+    paths:
+      - 'packages/desktop/**'
+      - 'package.json'
+      - 'yarn.lock'
+      - '.github/workflows/sanitizers.yml'
+  pull_request:
+    paths:
+      - 'packages/desktop/**'
+      - 'package.json'
+      - 'yarn.lock'
+      - '.github/workflows/sanitizers.yml'
+  workflow_dispatch:
+    inputs:
+      reset_cache:
+        description: 'Reset cache'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  node_version: 24
+  reset_cache: ${{ inputs.reset_cache || false }}
+
+jobs:
+  sanitizers:
+    name: "Sanitizer & Type Checks"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          submodules: recursive
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.node_version }}
+
+      - name: Set up node_modules cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        continue-on-error: false
+        with:
+          path: |
+            node_modules/
+          key: ${{ runner.os }}-${{ runner.arch }}-yarn-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ runner.arch }}-yarn-
+
+      - name: Reset node_modules cache (if enabled)
+        if: env.reset_cache == 'true'
+        run: rm -rf node_modules/
+
+      - name: Install yarn dependencies
+        run: yarn
+
+      - name: Strict lint check
+        run: yarn desktop lint:strict
+
+      - name: Typecheck desktop and tests
+        run: yarn desktop typecheck
+
+      - name: Run Jest sanitizers (open handles, leaks, unhandled rejections)
+        run: yarn desktop test:sanitizers
+
+      - name: Run xCloud protocol tests
+        run: yarn desktop test:xcloud

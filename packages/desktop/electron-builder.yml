@@ -1,0 +1,56 @@
+appId: com.oscarlosu.xenonstream
+productName: XenonStream
+copyright: Copyright © 2026 oscarlosu-lab
+
+directories:
+  output: dist
+  buildResources: resources
+
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+publish:
+- github
+
+
+# Mac OS configuration
+mac:
+  category: public.app-category.games
+  entitlements: resources/entitlements.mac.plist
+  entitlementsInherit: resources/entitlements.mac.plist
+  extendInfo:
+    NSMicrophoneUsageDescription: XenonStream uses the microphone for the voice chat of your stream.
+  target:
+  - target: dmg
+    arch:
+    - universal
+
+# Config for OSX dmg
+dmg:
+  contents:
+    - x: 130
+      y: 220
+    - x: 410
+      y: 220
+      type: "link"
+      path: "/Applications"
+
+# Windows configuration
+win:
+  target:
+    - "zip"
+    - "nsis"
+
+# Config for the windows installer
+nsis:
+  oneClick: true
+  perMachine: true
+
+# Linux configuration
+linux:
+  category: Game
+  target:
+    - "AppImage"
+    - "deb"

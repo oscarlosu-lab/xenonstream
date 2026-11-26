@@ -1,0 +1,61 @@
+import React from 'react'
+
+interface ButtonProps {
+  label: string | any;
+  icon?: string;
+  title?: string;
+  ariaLabel?: string;
+  ariaExpanded?: boolean;
+  ariaControls?: string;
+  autoBlur?: boolean;
+  disabled?: boolean;
+  className?: string;
+  onClick?: (e) => void;
+}
+
+function Button({
+    label,
+    icon,
+    title,
+    ariaLabel,
+    ariaExpanded,
+    ariaControls,
+    autoBlur = true,
+    disabled,
+    className,
+    onClick,
+}: ButtonProps) {
+  
+    if(label === undefined)
+        label = 'Button'
+
+    className = className ? 'btn '+className : 'btn'
+
+    return (
+        <React.Fragment>
+            <button
+                className={className}
+                title={title}
+                aria-label={ariaLabel}
+                aria-expanded={ariaExpanded}
+                aria-controls={ariaControls}
+                onClick={onClick}
+                disabled={disabled}
+                onFocus={(e) => {
+                    if (autoBlur === true) {
+                        e.target.blur()
+                    }
+                }}
+                style={(icon) ? {
+                    backgroundImage: `url(${icon})`,
+                    backgroundRepeat: 'no-repeat, no-repeat',
+                    backgroundPosition: 'left 10px bottom  50%',
+                    backgroundSize: 18,
+                    paddingLeft: 35,
+                    // height: 41,
+                }:{}}>{label}</button>
+        </React.Fragment>
+    )
+}
+
+export default Button

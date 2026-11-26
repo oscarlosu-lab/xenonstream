@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>io.github.oscarlosu_lab.xenonstream</id>
+  <launchable type="desktop-id">io.github.oscarlosu_lab.xenonstream.desktop</launchable>
+  <name>XenonStream</name>
+  <project_license>MIT</project_license>
+  <developer_name>oscarlosu-lab</developer_name>
+  <summary>XenonStream is an open-source cross-platform client for Xbox Remote Play and Xbox Cloud Gaming (xCloud)</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <url type="homepage">https://oscarlosu-lab.github.io/xenonstream/</url>
+  <url type="help">https://github.com/oscarlosu-lab/xenonstream/issues</url>
+  <url type="bugtracker">https://github.com/oscarlosu-lab/xenonstream/issues</url>
+  <description>
+    <p>XenonStream is an open-source cross-platform client for Xbox Remote Play and Xbox Cloud Gaming (xCloud) with 1440p streaming, HEVC/AV1 codecs, Linux VA-API &amp; Wayland support, Clarity Boost, LAN host-first routing, encrypted multi-account storage, 4-player local co-op, and a draggable real-time FPS HUD.</p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image type="source">https://raw.githubusercontent.com/oscarlosu-lab/xenonstream/main/images/main-nowindow.jpg</image>
+    </screenshot>
+    <screenshot>
+      <image type="source">https://raw.githubusercontent.com/oscarlosu-lab/xenonstream/main/images/stream-nowindow.jpg</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="1.0.0" date="2026-11-26">
+      <description>
+        <ul>
+          <li>Initial standalone cross-platform release of XenonStream for Windows, Linux (AppImage/DEB/Flatpak), Steam Deck, and macOS (Universal DMG).</li>
+          <li>720p / 1080p / 1440p streaming, H.264 / HEVC (H.265) / AV1 codec selection with RTX/FEC resilience, Clarity Boost, and LAN host-first UDP routing.</li>
+          <li>Obsidian Neon Emerald-Cyan UI, instant-collapse top stream bar chevron, draggable 36px green FPS HUD, 4-player co-op, Touch Overlay, Discord RPC, 13 locales, and Electron 45.3.4.</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+  <content_rating type="oars-1.1"/>
+</component>

@@ -1,0 +1,97 @@
+.btn {
+    padding: 0.7rem 1.15rem;
+    border-radius: 10px;
+    cursor: pointer;
+
+    background: rgba(30, 41, 59, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    color: #f8fafc;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+
+    transition: all 0.16s ease;
+
+    align-items: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.btn:hover {
+    background: rgba(51, 65, 85, 0.95);
+    border-color: rgba(148, 163, 184, 0.55);
+    transform: translateY(-1px);
+}
+
+.btn:disabled {
+    cursor: default;
+    opacity: 0.45;
+    transform: none;
+}
+
+.btn-small {
+    padding: 0.45rem 0.8rem;
+    font-size: 12px;
+}
+
+.btn-large {
+    padding: 1.2rem 1.8rem;
+    font-size: 15px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 55%, #0891b2 100%);
+    border-color: rgba(110, 231, 183, 0.55);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.32);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 55%, #06b6d4 100%);
+    border-color: rgba(167, 243, 208, 0.8);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.45);
+}
+
+.btn-cancel {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    border-color: rgba(252, 165, 165, 0.45);
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #f87171, #dc2626);
+}
+
+/* Round buttons with only an icon (same size, so they line up evenly) */
+.btn-icon {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+/* the play triangle looks off-center otherwise */
+.btn-icon .fa-play {
+    margin-left: 2px;
+}
+
+.btn-power-on {
+    background: linear-gradient(135deg, #10b981 0%, #059669 55%, #0891b2 100%);
+    border-color: rgba(110, 231, 183, 0.55);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.32);
+}
+
+.btn-power-on:hover {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 55%, #06b6d4 100%);
+}
+
+.btn-power-off {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    border-color: rgba(252, 165, 165, 0.45);
+}
+
+.btn-power-off:hover {
+    background: linear-gradient(135deg, #f87171, #dc2626);
+}

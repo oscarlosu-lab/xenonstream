@@ -1,0 +1,324 @@
+name: Build Workflow
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+    tags:
+      - v*
+    paths:
+      - 'package.json'
+      - 'packages/**'
+      - 'yarn.lock'
+      - '.github/workflows/*.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - 'packages/**'
+      - 'yarn.lock'
+      - '.github/workflows/*.yml'
+  workflow_dispatch:
+    inputs:
+      reset_cache:
+        description: 'Reset cache'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  node_version: 24
+  reset_cache: ${{ inputs.reset_cache || false }}
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  lint:
+    name: "Lint & Typecheck"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.node_version }}
+
+      - name: Set up node_modules cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        continue-on-error: false
+        with:
+          path: |
+            node_modules/
+          key: ${{ runner.os }}-${{ runner.arch }}-yarn-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ runner.arch }}-yarn-
+
+      - name: Reset node_modules cache (if enabled)
+        if: env.reset_cache == 'true'
+        run: rm -rf node_modules/
+
+      - name: Install yarn dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Strict lint check
+        run: yarn desktop lint:strict
+
+      - name: Typecheck desktop and tests
+        run: yarn desktop typecheck
+
+  tests:
+    name: "Run Tests & Sanitizers"
+    runs-on: ubuntu-latest
+    needs: ['lint']
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.node_version }}
+
+      - name: Set up node_modules cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        continue-on-error: false
+        with:
+          path: |
+            node_modules/
+          key: ${{ runner.os }}-${{ runner.arch }}-yarn-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ runner.arch }}-yarn-
+
+      - name: Install yarn dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Run Jest sanitizers
+        run: yarn desktop test:sanitizers
+
+      - name: Run xCloud protocol tests
+        run: yarn desktop test:xcloud
+
+  cachedeps:
+    name: "Flatpak: Generate cached sources"
+    runs-on: ubuntu-latest
+    needs: ['tests']
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: 'flatpak/flatpak-builder-tools'
+
+      - name: Install Python deps
+        run: 'pip3 install --only-binary :all: aiohttp==3.14.5 toml==0.10.2'
+
+      - name: Install flatpak-builder-tools
+        run: pipx install ./node/
+
+      - name: Checkout Git repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Prep artifacts dir
+        run: mkdir ./deps-dist/
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.node_version }}
+
+      - name: Reset node_modules cache (if enabled)
+        if: env.reset_cache == 'true'
+        run: rm -rf node_modules/
+
+      - name: Install yarn dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Build yarn cache
+        run: flatpak-node-generator yarn yarn.lock -o ./deps-dist/yarn-sources.json
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: flatpak-sources
+          path: ./deps-dist/
+
+  flatpak:
+    name: "Linux: Flatpak Build"
+    runs-on: ${{ matrix.os }}
+    needs: [cachedeps]
+
+    strategy:
+      matrix:
+        os: ['ubuntu-latest']
+
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: flatpak-sources
+          path: packages/desktop/flatpak/
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.node_version }}
+
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@cf1e78c50ca91e757bab3edc229027eebfc07871 # main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+
+      - name: Set up flatpak build cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        continue-on-error: false
+        with:
+          path: |
+            build/
+            .flatpak-builder/
+            flatpak-node/
+          key: ${{ runner.os }}-${{ runner.arch }}-flatpak-builder-${{ hashFiles('packages/desktop/flatpak/*') }}
+          restore-keys: ${{ runner.os }}-${{ runner.arch }}-flatpak-builder-
+
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@79327416609af08178ad73b352877e51450790b3 # v6
+        with:
+          bundle: xenonstream.flatpak
+          manifest-path: packages/desktop/flatpak/io.github.oscarlosu_lab.xenonstream.yml
+          cache-key: flatpak-builder-${{ github.sha }}
+
+      - name: Upload Flatpak artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: xenonstream.flatpak
+          path: |
+            xenonstream.flatpak
+        if: contains(github.event.head_commit.message, '[build]') || startsWith(github.ref, 'refs/tags/v')
+
+      - name: Release flatpak
+        uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          files: xenonstream.flatpak
+          draft: true
+
+  release:
+    name: "Build/release Electron app"
+    runs-on: ${{ matrix.os }}
+    needs: ['tests']
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.node_version }}
+
+      - name: Set up node_modules cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        continue-on-error: false
+        with:
+          path: |
+            node_modules/
+          key: ${{ runner.os }}-${{ runner.arch }}-yarn-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ runner.arch }}-yarn-
+
+      - name: Install rimraf (if reset_cache enabled)
+        if: env.reset_cache == 'true'
+        run: npm install -g --ignore-scripts rimraf@6.1.4
+
+      - name: Reset node_modules cache (if reset_cache enabled)
+        if: env.reset_cache == 'true'
+        run: rimraf node_modules/
+
+      - name: Install yarn dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Build/release Electron app
+        uses: samuelmeuli/action-electron-builder@92327c67bc45ff7c38bf55d8aa8c4d75b7ea38e7 # v1.6.0
+        with:
+          package_root: packages/desktop
+          github_token: ${{ secrets.github_token }}
+          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+
+      - name: Upload Linux AppImage
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: xenonstream-linux.AppImage
+          path: |
+            packages/desktop/dist/*.AppImage
+        if: matrix.os == 'ubuntu-latest' && contains(github.event.head_commit.message, '[build]')
+
+      - name: Upload Linux DEB
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: xenonstream-linux.deb
+          path: |
+            packages/desktop/dist/*.deb
+        if: matrix.os == 'ubuntu-latest' && contains(github.event.head_commit.message, '[build]')
+
+      - name: Upload Mac DMG
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: xenonstream-macos.dmg
+          path: |
+            packages/desktop/dist/*.dmg
+        if: matrix.os == 'macos-latest' && contains(github.event.head_commit.message, '[build]')
+
+      - name: Upload Windows Installer & ZIP
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: xenonstream-win
+          path: |
+            packages/desktop/dist/*.exe
+            packages/desktop/dist/*.zip
+        if: matrix.os == 'windows-latest' && contains(github.event.head_commit.message, '[build]')
+
+  dependabot-merge:
+    name: "Dependabot Auto-Merge Check"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]' && github.event.pull_request.user.login == 'dependabot[bot]'
+    needs: [flatpak, release]
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - name: Merge when build succeeds
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+        with:
+          script: |
+            console.log('Build passed, automerging Dependabot PR...');
+
+            await github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              event: 'APPROVE',
+              body: 'Build passed, automerging Dependabot PR...',
+            });
+            console.log('Dependabot PR approved successfully.');
+
+            await github.rest.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              merge_method: 'merge',
+            });
+            console.log('Dependabot PR merged successfully.');

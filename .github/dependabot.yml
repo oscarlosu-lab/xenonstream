@@ -1,0 +1,31 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    labels:
+      - "github-actions"
+      - "dependencies"
+    commit-message:
+      prefix: "chore(ci)"
+
+  # Maintain dependencies for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    labels:
+      - "yarn"
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+    versioning-strategy: increase
+    groups:
+      react:
+        patterns:
+          - "react*"
+          - "@types/react*"

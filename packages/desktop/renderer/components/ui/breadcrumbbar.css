@@ -1,0 +1,45 @@
+#app_body_container .component_breadcrumbbar_push {
+  height: 34px;
+}
+
+#app_body_container .component_breadcrumbbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    height: 34px;
+    width: 70vw;
+    backdrop-filter: blur(18px);
+    background-color: rgba(7, 13, 18, 0.72);
+    border-bottom: 1px solid rgba(74, 222, 128, 0.18);
+    box-sizing: border-box;
+    overflow: hidden;
+    font-size: 13px;
+    color: #e2e8f0;
+    position: fixed;
+    z-index: 11;
+}
+
+#app_body_container .component_breadcrumbbar a {
+    color: #e2e8f0;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+#app_body_container .component_breadcrumbbar a:after {
+    content: ">";
+    color: #22d3ee;
+    margin-left: 10px;
+    margin-right: 0px;
+}
+
+#app_body_container .component_breadcrumbbar a:last-child:after {
+    content: "";
+}
+
+#app_body_container .component_breadcrumbbar a:first-child {
+  margin-left: 20px;
+  color: #6ee7b7;
+}

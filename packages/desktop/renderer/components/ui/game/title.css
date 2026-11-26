@@ -1,0 +1,88 @@
+div.component_gametitle {
+    position: relative;
+    width: 140px;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+div.component_gametitle:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 24px rgba(16, 185, 129, 0.28);
+}
+
+div.component_gametitle img {
+    border-radius: 12px;
+    display: block;
+}
+
+div.component_gametitle_unentitled img {
+    filter: grayscale(1);
+    opacity: 0.45;
+    transition: opacity 0.2s ease-in-out;
+}
+
+div.component_gametitle_unentitled:hover img {
+    opacity: 0.65;
+}
+
+div.component_gametitle div.component_gametitle_title {
+    background: linear-gradient(0deg, rgba(6, 95, 70, 0.88) 0%, rgba(8, 145, 178, 0.45) 55%, rgba(0, 0, 0, 0) 100%);
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 50;
+    min-height: 100px;
+    vertical-align: bottom;
+    border-radius: 0 0 12px 12px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+div.component_gametitle:hover div.component_gametitle_title {
+    opacity: 1;
+}
+
+div.component_gametitle div.component_gametitle_title p {
+    font-size: 13px;
+    text-align: center;
+    vertical-align: bottom;
+    text-transform: uppercase;
+    font-weight: bold;
+    position: absolute;
+    bottom: 8px;
+    left: 6px;
+    right: 6px;
+}
+
+div.component_gametitle:hover div.component_gametitle_title p {
+    color: #ffffff;
+}
+
+div.component_gametitle div.component_gametitle_infopage {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 100;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+div.component_gametitle:hover div.component_gametitle_infopage {
+    opacity: 1;
+}
+
+div.component_gametitle div.component_gametitle_infopage a {
+    color: #ffffff;
+    background: rgba(6, 10, 13, 0.72);
+    display: block;
+    border-radius: 10px;
+    width: 19px;
+    height: 19px;
+    border: 1px solid rgba(74, 222, 128, 0.65);
+}

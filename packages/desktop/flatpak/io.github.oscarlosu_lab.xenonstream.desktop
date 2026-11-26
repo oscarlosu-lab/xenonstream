@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=XenonStream
+Comment=XenonStream is an open-source cross-platform client for Xbox Remote Play and Xbox Cloud Gaming (xCloud)
+Icon=io.github.oscarlosu_lab.xenonstream
+Exec=run.sh
+Terminal=false
+StartupWMClass=xenonstream
+Categories=Network;Game;
+Keywords=Game;Streaming;Xbox;xCloud;Console;RemotePlay;

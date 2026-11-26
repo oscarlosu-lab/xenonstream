@@ -1,0 +1,93 @@
+import pkg from '../../package.json'
+import WebsocketIPC from './websocket'
+
+export default {
+
+    // on(channel:string, listener){
+    //     ipcRenderer.on(channel, listener)
+    // },
+
+    send(channel:string, action:string, data = {}){
+        if(window.XenonStream === undefined){
+            // Electron API Not available. Lets mock!
+            window.XenonStream = this.websocketFallbackApi()
+        }
+
+        // console.log('DEBUG:', window.XenonStream)
+        return window.XenonStream.send(channel, action, data)
+    },
+
+    on(channel:string, listener){
+        if(window.XenonStream === undefined){
+            // Electron API Not available. Lets mock!
+            window.XenonStream = this.websocketFallbackApi()
+        }
+
+        // console.log('DEBUG', window.XenonStream)
+        return window.XenonStream.on(channel, listener)
+    }, 
+
+    onAction(channel:string, action:string, listener){
+        if(window.XenonStream === undefined){
+            // Electron API Not available. Lets mock!
+            window.XenonStream = this.websocketFallbackApi()
+        }
+
+        // console.log('DEBUG', window.XenonStream)
+        return window.XenonStream.onAction(channel, action, listener)
+    },
+
+    removeListener(channel:string, listener){
+        if(window.XenonStream === undefined){
+            // Electron API Not available. Lets mock!
+            window.XenonStream = this.websocketFallbackApi()
+        }
+
+        // console.log('DEBUG', window.XenonStream)
+        return window.XenonStream.removeListener(channel, listener)
+    },
+
+    websocketFallbackApi(){
+        // Use wss when the page is served over https
+        const url = new URL('/ipc', window.location.href)
+        url.protocol = url.protocol.replace('http', 'ws')
+        const websocket = new WebsocketIPC(url.toString())
+
+        console.log('Injecting XenonStream WebSocket IPC')
+
+        return {
+            _websocket: websocket,
+
+            send(channel, action, data){
+                // console.log('GreenlightAPI send()', channel, action, data)
+                return this._websocket.send(channel, action, data)
+            },
+            on(channel, listener){
+                // console.log('GreenlightAPI on()', channel, listener)
+                return this._websocket.on(channel, listener)
+            },
+            onAction(channel, action, listener){
+                // console.log('GreenlightAPI onAction()', channel, action, listener)
+                return this._websocket.onAction(channel, action, listener)
+
+            },
+            removeListener(channel, listener){
+                // console.log('GreenlightAPI removeListener()', channel, listener)
+                return this._websocket.removeListener(channel, listener)
+            },
+
+            getVersion(){
+                return pkg.version+' (WebUI)'
+            },
+
+            openExternal(url:string){
+                window.open(url, '_blank')
+            },
+
+            isWebUI(){
+                return true
+            },
+        }
+    },
+}
+
