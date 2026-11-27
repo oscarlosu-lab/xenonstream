@@ -3,7 +3,7 @@
   "name": "xenonstream-desktop",
   "description": "XenonStream is a cross-platform streaming client for Xbox Remote Play and Xbox Cloud Gaming (xCloud)",
   "version": "1.0.0",
-  "author": "oscarlosu-lab <oscarlosu-lab@users.noreply.github.com>",
+  "author": "oscarlosu-lab <foxulabs@gmail.com>",
   "license": "MIT",
   "main": "app/background.js",
   "repository": {

@@ -50,7 +50,7 @@ nsis:
 
 # Linux configuration
 linux:
-  maintainer: "oscarlosu-lab <oscarlosu-lab@users.noreply.github.com>"
+  maintainer: "oscarlosu-lab <foxulabs@gmail.com>"
   category: Game
   target:
     - "AppImage"
