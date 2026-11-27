@@ -143,7 +143,15 @@
                 "forceLowResLabel": "强制低分辨率视频",
                 "forceLowResDescription": "（此选项对 Steam Deck 有用，让应用以低分辨率渲染以便启用 FSR。）",
                 "audioTitle": "音频",
-                "disableAudioLabel": "禁用音频"
+                "disableAudioLabel": "禁用音频",
+                "upscalerLabel": "Video Upscaler / Enhancer",
+                "upscalerModeOff": "Off (Native)",
+                "upscalerModeRtxVsr": "RTX VSR / Intel VSR (Hardware Passthrough)",
+                "upscalerModeClarity": "Clarity Boost (CSS/SVG)",
+                "upscalerModeCas": "AMD FidelityFX CAS (WebGL2)",
+                "upscalerModeFsr1": "AMD FSR 1.0 — EASU + RCAS (WebGL2)",
+                "upscalerSharpnessLabel": "Sharpness",
+                "upscalerDescription": "FSR 1.0 performs WebGL2 EASU spatial upscaling + RCAS sharpening. CAS adds halo-free sharpening. RTX VSR keeps hardware overlay clean for NVIDIA/Intel AI video super resolution."
             },
             "webUI": {
                 "pageTitle": "设置：Web UI",
@@ -235,7 +243,10 @@
             "itsTakingALittleLonger": "稍慢了一点…串流可能马上就开始。",
             "startingConnection": "正在建立连接…",
             "connectingToConsole": "正在连接主机…",
-            "clientHasBeenDisconnected": "客户端已断开连接。"
+            "clientHasBeenDisconnected": "客户端已断开连接。",
+            "hideMenuBar": "隐藏菜单栏",
+            "showMenuBar": "显示菜单栏",
+            "upscalerTitle": "Video Upscaler (FSR 1.0 / CAS / RTX VSR)"
         },
         "updater": {
             "unableToCheckForUpdates": "暂时无法检查更新，请重试。",
@@ -267,9 +278,5 @@
             "details": "详情：",
             "failedToGetPlayerState": "获取播放器状态失败。错误详情："
         }
-    },
-    "streamWindow": {
-        "hideMenuBar": "隐藏菜单栏",
-        "showMenuBar": "显示菜单栏"
     }
 }

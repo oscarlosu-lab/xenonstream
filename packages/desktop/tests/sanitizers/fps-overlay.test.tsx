@@ -150,4 +150,82 @@ describe('Real-time FPS & stream metrics overlay', () => {
         mounted.unmount()
         harness.dispose()
     })
+
+    test('StreamFpsOverlay clamps off-screen saved fullscreen coordinates on mount and window resize', () => {
+        const origInnerWidth = (globalThis as any).window?.innerWidth
+        const origInnerHeight = (globalThis as any).window?.innerHeight
+        const listeners: Record<string, Array<() => void>> = {}
+        const fakeWindow: any = {
+            innerWidth: 1280,
+            innerHeight: 720,
+            addEventListener: jest.fn((event: string, cb: () => void) => {
+                listeners[event] = listeners[event] || []
+                listeners[event].push(cb)
+            }),
+            removeEventListener: jest.fn((event: string, cb: () => void) => {
+                listeners[event] = (listeners[event] || []).filter((fn) => fn !== cb)
+            }),
+        }
+        const hadWindow = typeof (globalThis as any).window !== 'undefined'
+        if (hadWindow) {
+            Object.defineProperty(window, 'innerWidth', { configurable: true, writable: true, value: 1280 })
+            Object.defineProperty(window, 'innerHeight', { configurable: true, writable: true, value: 720 })
+            jest.spyOn(window, 'addEventListener').mockImplementation(fakeWindow.addEventListener)
+            jest.spyOn(window, 'removeEventListener').mockImplementation(fakeWindow.removeEventListener)
+        } else {
+            (globalThis as any).window = fakeWindow
+        }
+
+        const harness = createHookHarness()
+        const mounted = harness.mount(StreamFpsOverlay, {
+            metrics: {
+                fps: 60,
+                width: 2560,
+                height: 1440,
+                bitrateMbps: 25.0,
+                rttMs: 2,
+                lossPercent: 0,
+                codec: 'H264',
+            },
+            position: { x: 1738, y: 110 },
+        })
+
+        let tree: any = mounted.getOutput()
+        expect(tree.props.style.left).toBe(1140)
+        expect(tree.props.style.top).toBe(110)
+
+        if (hadWindow) {
+            Object.defineProperty(window, 'innerWidth', { configurable: true, writable: true, value: 800 })
+            Object.defineProperty(window, 'innerHeight', { configurable: true, writable: true, value: 600 })
+        } else {
+            fakeWindow.innerWidth = 800
+            fakeWindow.innerHeight = 600
+        }
+        ;(listeners.resize || []).forEach((cb) => cb())
+        mounted.rerender({
+            metrics: {
+                fps: 60,
+                width: 2560,
+                height: 1440,
+                bitrateMbps: 25.0,
+                rttMs: 2,
+                lossPercent: 0,
+                codec: 'H264',
+            },
+            position: { x: 1738, y: 110 },
+        })
+        tree = mounted.getOutput()
+        expect(tree.props.style.left).toBe(660)
+        expect(tree.props.style.top).toBe(110)
+
+        mounted.unmount()
+        harness.dispose()
+
+        if (hadWindow) {
+            Object.defineProperty(window, 'innerWidth', { configurable: true, writable: true, value: origInnerWidth })
+            Object.defineProperty(window, 'innerHeight', { configurable: true, writable: true, value: origInnerHeight })
+        } else {
+            delete (globalThis as any).window
+        }
+    })
 })

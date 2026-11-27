@@ -76,12 +76,9 @@ div#component_streamcomponent_gamebar {
     left: 0;
     right: 0;
     height: 70px;
+    visibility: visible;
 
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out, visibility 0s;
 }
 
 /* Hint to free the mouse: a tab hanging from the top edge, with rounded bottom corners and concave top corners. */
@@ -139,6 +136,9 @@ div#component_streamcomponent_gamebar.hidden {
     opacity: 0;
     transform: translateY(-100%);
     pointer-events: none;
+    backdrop-filter: none;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out, visibility 0s linear 0.2s;
 }
 
 button#component_streamcomponent_gamebar_toggle {
@@ -151,8 +151,7 @@ button#component_streamcomponent_gamebar_toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(7, 13, 18, 0.86);
-    backdrop-filter: blur(16px);
+    background: rgba(7, 13, 18, 0.92);
     border: 1px solid rgba(74, 222, 128, 0.55);
     border-top: none;
     border-radius: 0 0 10px 10px;
@@ -160,7 +159,7 @@ button#component_streamcomponent_gamebar_toggle {
     font-size: 11px;
     cursor: pointer;
     padding: 0;
-    transition: top 0.25s ease-in-out, opacity 0.2s ease-in-out, height 0.2s ease-in-out, background-color 0.16s ease, box-shadow 0.16s ease;
+    transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out, height 0.2s ease-in-out, background-color 0.16s ease, box-shadow 0.16s ease;
 }
 
 button#component_streamcomponent_gamebar_toggle.bar-open {
@@ -195,10 +194,10 @@ div#component_streamcomponent_gamebar div#component_streamcomponent_gamebar_menu
     gap: 20px;
 }
 
-div#component_streamcomponent_audiodevices {
-    backdrop-filter: blur(22px);
-    background: rgba(7, 13, 18, 0.88);
-    border: 1px solid rgba(74, 222, 128, 0.22);
+div#component_streamcomponent_audiodevices,
+div#component_streamcomponent_upscaler {
+    background: rgba(7, 13, 18, 0.94);
+    border: 1px solid rgba(74, 222, 128, 0.28);
     border-top: 0;
     position: absolute;
     top: 70px;
@@ -214,12 +213,20 @@ div#component_streamcomponent_audiodevices {
     gap: 10px;
 }
 
-div#component_streamcomponent_audiodevices p {
+div#component_streamcomponent_audiodevices p,
+div#component_streamcomponent_upscaler p {
     display: contents;
 }
 
+div#component_streamcomponent_upscaler input[type="range"] {
+    width: 100%;
+    accent-color: #22d3ee;
+    cursor: pointer;
+}
+
 /* Match the .btn style used by the gamebar buttons */
-div#component_streamcomponent_audiodevices select {
+div#component_streamcomponent_audiodevices select,
+div#component_streamcomponent_upscaler select {
     width: 100%;
     padding: 0.7rem 2.2rem 0.7rem 1rem;
     border-radius: 4px;
@@ -240,16 +247,19 @@ div#component_streamcomponent_audiodevices select {
     transition: background-color 0.1s ease;
 }
 
-div#component_streamcomponent_audiodevices select:hover {
+div#component_streamcomponent_audiodevices select:hover,
+div#component_streamcomponent_upscaler select:hover {
     background-color: #6f6f6f;
 }
 
-div#component_streamcomponent_audiodevices select:focus {
+div#component_streamcomponent_audiodevices select:focus,
+div#component_streamcomponent_upscaler select:focus {
     outline: none;
     border-color: #005e31;
 }
 
-div#component_streamcomponent_audiodevices select option {
+div#component_streamcomponent_audiodevices select option,
+div#component_streamcomponent_upscaler select option {
     background-color: #444444;
     color: #ffffff;
     text-transform: none;

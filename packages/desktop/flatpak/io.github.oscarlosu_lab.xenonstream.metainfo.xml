@@ -11,7 +11,7 @@
   <url type="help">https://github.com/oscarlosu-lab/xenonstream/issues</url>
   <url type="bugtracker">https://github.com/oscarlosu-lab/xenonstream/issues</url>
   <description>
-    <p>XenonStream is an open-source cross-platform client for Xbox Remote Play and Xbox Cloud Gaming (xCloud) with 1440p streaming, HEVC/AV1 codecs, Linux VA-API &amp; Wayland support, Clarity Boost, LAN host-first routing, encrypted multi-account storage, 4-player local co-op, and a draggable real-time FPS HUD.</p>
+    <p>XenonStream is an open-source cross-platform client for Xbox Remote Play and Xbox Cloud Gaming (xCloud) with 1440p streaming, HEVC/AV1 codecs, Linux VA-API &amp; Wayland support, AMD FSR 1.0 / CAS (WebGL2), RTX VSR passthrough &amp; Clarity Boost, LAN host-first routing, encrypted multi-account storage, 4-player local co-op, and an F9 draggable real-time FPS HUD.</p>
   </description>
   <screenshots>
     <screenshot type="default">
@@ -22,12 +22,12 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="1.0.0" date="2026-11-26">
+    <release version="1.0.0" date="2026-11-27">
       <description>
         <ul>
           <li>Initial standalone cross-platform release of XenonStream for Windows, Linux (AppImage/DEB/Flatpak), Steam Deck, and macOS (Universal DMG).</li>
-          <li>720p / 1080p / 1440p streaming, H.264 / HEVC (H.265) / AV1 codec selection with RTX/FEC resilience, Clarity Boost, and LAN host-first UDP routing.</li>
-          <li>Obsidian Neon Emerald-Cyan UI, instant-collapse top stream bar chevron, draggable 36px green FPS HUD, 4-player co-op, Touch Overlay, Discord RPC, 13 locales, and Electron 45.3.4.</li>
+          <li>720p / 1080p / 1440p streaming, H.264 / HEVC (H.265) / AV1 codec selection with RTX/FEC resilience, AMD FSR 1.0 / CAS (WebGL2) + RTX VSR passthrough + Clarity Boost with live switcher, and LAN host-first UDP routing.</li>
+          <li>Obsidian Neon Emerald-Cyan UI, instant-collapse top stream bar chevron, viewport-safe F9 draggable 36px green FPS HUD, 4-player co-op, Touch Overlay, Discord RPC, 13 locales, and Electron 45.3.4.</li>
         </ul>
       </description>
     </release>

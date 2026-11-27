@@ -29,11 +29,20 @@ interface StreamFpsOverlayProps {
     onPositionChange?: (pos: FpsOverlayPosition) => void
 }
 
+function clampToCurrentViewport(pos: FpsOverlayPosition): FpsOverlayPosition {
+    if (typeof window === 'undefined') {
+        return pos
+    }
+    return clampOverlayPosition(pos, window.innerWidth, window.innerHeight)
+}
+
 export default function StreamFpsOverlay({ metrics, position, onPositionChange }: StreamFpsOverlayProps) {
     const fpsText = metrics ? `${metrics.fps}FPS` : '--FPS'
-    const initial = position && typeof position.x === 'number' && typeof position.y === 'number'
-        ? position
-        : DEFAULT_FPS_OVERLAY_POS
+    const initial = clampToCurrentViewport(
+        position && typeof position.x === 'number' && typeof position.y === 'number'
+            ? position
+            : DEFAULT_FPS_OVERLAY_POS,
+    )
 
     const [coords, setCoords] = React.useState<FpsOverlayPosition>(initial)
     const [dragging, setDragging] = React.useState(false)
@@ -50,9 +59,32 @@ export default function StreamFpsOverlay({ metrics, position, onPositionChange }
 
     React.useEffect(() => {
         if (position && typeof position.x === 'number' && typeof position.y === 'number' && !dragRef.current?.active) {
-            setCoords(position)
+            setCoords(clampToCurrentViewport(position))
         }
     }, [position?.x, position?.y])
+
+    React.useEffect(() => {
+        if (typeof window === 'undefined') {
+            return
+        }
+        const handleResize = () => {
+            if (dragRef.current?.active) {
+                return
+            }
+            setCoords(prev => {
+                const next = clampToCurrentViewport(prev)
+                if (next.x === prev.x && next.y === prev.y) {
+                    return prev
+                }
+                coordsRef.current = next
+                return next
+            })
+        }
+        window.addEventListener('resize', handleResize)
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
 
     function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
         if (typeof document !== 'undefined' && document.pointerLockElement) {

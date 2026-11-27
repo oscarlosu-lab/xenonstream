@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.0 (2026-11-26) — Initial Standalone Cross-Platform Release
+## v1.0.0 (2026-11-27) — Initial Standalone Cross-Platform Release
 
 First standalone release of **XenonStream** (`oscarlosu-lab/xenonstream`) for **Windows, Linux (AppImage / DEB / Flatpak), Steam Deck, and macOS (Universal DMG)**, built on top of the MIT-licensed [`unknownskl/greenlight`](https://github.com/unknownskl/greenlight) and [`unknownskl/xbox-xcloud-player`](https://github.com/unknownskl/xbox-xcloud-player) foundations (see [NOTICE](NOTICE)).
 
@@ -11,11 +11,11 @@ First standalone release of **XenonStream** (`oscarlosu-lab/xenonstream`) for **
 - **Configurable Remote Play Public Port**: global `remote_port` (default `9002`) and per-console `remote_port_consoles` overrides in *Settings → Streaming*.
 - **Linux VA-API & Wayland**: `VaapiVideoDecoder`, `VaapiVideoDecodeLinuxGL`, `UseOzonePlatform`, `ozone-platform-hint=auto`, and Flatpak `io.github.oscarlosu_lab.xenonstream` (`--socket=wayland`).
 - **macOS Microphone Entitlements**: `resources/entitlements.mac.plist`, `NSMicrophoneUsageDescription`, and IPC handlers (`getMicrophoneAccess`, `askMicrophoneAccess`, `openMicrophoneSettings`).
-- **Clarity Boost**: real-time GPU SVG 3×3 unsharp-mask sharpening (`0.0–1.0`).
+- **Real-Time GPU Video Upscaler & Enhancer**: **AMD FSR 1.0 (EASU + RCAS)** and **AMD FidelityFX CAS** in WebGL2 (`lib/videoUpscaler.ts` with in-place `texSubImage2D` and 1:1 native EASU bypass), **NVIDIA RTX VSR / Intel VSR Passthrough**, and legacy **Clarity Boost** (CSS/SVG), defaulting to *Off (Native)* with a live mid-stream `✨` A/B popover and sharpness slider.
 
 ### HUD, UI, Diagnostics, Input & Auth
 - **Obsidian Neon Emerald-Cyan UI**: custom app icons (`icon.ico`, `icon.icns`, `icon.png`), frosted command header with pill navigation, branded QR login hero, gradient controls, and elevated game tiles.
-- **Instant-Collapse Stream Bar & Draggable 36px Green FPS HUD**: compact `▲`/`▼` chevron toggle tab (`#component_streamcomponent_gamebar_toggle`) to hide or restore the stream toolbar immediately, plus real-time WebRTC `framesPerSecond` readout (`z-index: 100`, persisted position).
+- **Instant-Collapse Stream Bar & Draggable 36px Green FPS HUD**: compact `▲`/`▼` chevron toggle tab (`#component_streamcomponent_gamebar_toggle`) to hide or restore the stream toolbar immediately, MPO-safe toolbar CSS (no `backdrop-filter` on hidden/permanent stream overlays), plus `F9` real-time WebRTC `framesPerSecond` readout (`z-index: 100`, persisted coordinates clamped across window resizes).
 - **Stream Toolbar & Diagnostics**: on-demand `StreamDebug`, `stream-path.log` with 5 MB rotation, PNG screenshots (`Pictures\XenonStream`), hide/show video toggle, and `chrome://gpu` + `chrome://webrtc-internals` windows.
 - **Security & Multi-Account**: `safeStorage` / DPAPI encrypted token storage (`enc:v1:`), automatic 401 refresh, prefilled `?otc=` browser login, scannable Microsoft QR login, and isolated `--profile=<name>` instances.
-- **Input, Audio & Localization**: `CompactGamepadDriver`, 4-player local co-op, Touch Overlay presets, custom button remapping, M&K pointer lock (`Esc` = Xbox Home), live audio output (`setSinkId`) & mic selector, opt-in Discord Rich Presence, **13 languages**, **Electron 45.3.4**, and **90 automated tests** (83 Jest sanitizers/unit + 7 xCloud protocol tests).
+- **Input, Audio, CI & Localization**: `CompactGamepadDriver`, 4-player local co-op, Touch Overlay presets, custom button remapping, M&K pointer lock (`Esc` = Xbox Home), live audio output (`setSinkId`) & mic selector, opt-in Discord Rich Presence, tracked `renderer/@types/images.d.ts` for clean CI typechecks, **13 languages**, **Electron 45.3.4**, and **98 automated tests** (91 Jest sanitizers/unit across 21 suites + 7 xCloud protocol tests).

@@ -13,6 +13,7 @@ import { useAudioDevices, getMicStream } from '../../lib/audiodevices'
 import { useSharedStreamStats } from '../../lib/streamStats'
 import { useSettings } from '../../context/userContext'
 import { getEstimatedPointer } from '../../lib/mousesensitivitypatch'
+import { clampSharpness, normalizeUpscalerMode } from '../../../lib/videoUpscaler'
 import { useTranslation } from 'react-i18next'
 
 // Top centre of the picture where the hint tells how to free the mouse (the bar was there): the middle 40% of the
@@ -41,16 +42,23 @@ function StreamComponent({
     const [waitingSeconds, setWaitingSeconds] = React.useState(0)
     const [debugVisible, setDebugVisible] = React.useState(false)
     const [fpsOverlayVisible, setFpsOverlayVisible] = React.useState(Boolean(settings.stream_fps_overlay))
+    React.useEffect(() => {
+        setFpsOverlayVisible(Boolean(settings.stream_fps_overlay))
+    }, [settings.stream_fps_overlay])
     const [videoHidden, setVideoHidden] = React.useState(false)
     const sharedStats = useSharedStreamStats(xPlayer, fpsOverlayVisible || debugVisible)
     const waitingIntervalRef = React.useRef<ReturnType<typeof setInterval> | undefined>(undefined)
     const isMountedRef = React.useRef(true)
     const micStreamRef = React.useRef<MediaStream>(null)
 
-    // Keep the gamebar visible while the audio devices menu is open, or collapsed immediately when toggled
+    // Keep the gamebar visible while the audio devices or upscaler menu is open, or collapsed immediately when toggled
     const [audioMenuOpen, setAudioMenuOpen] = React.useState(false)
     const audioMenuOpenRef = React.useRef(false)
     audioMenuOpenRef.current = audioMenuOpen
+    const [upscalerMenuOpen, setUpscalerMenuOpen] = React.useState(false)
+    const upscalerMenuOpenRef = React.useRef(false)
+    upscalerMenuOpenRef.current = upscalerMenuOpen
+    const activeUpscaler = normalizeUpscalerMode(settings.video_upscaler, settings.clarity_boost_strength)
     const [barManuallyHidden, setBarManuallyHidden] = React.useState(false)
     const barManuallyHiddenRef = React.useRef(false)
     barManuallyHiddenRef.current = barManuallyHidden
@@ -123,7 +131,7 @@ function StreamComponent({
                 setPointerLocked(isPointerLocked)
             }
 
-            const autoShow = audioMenuOpenRef.current || (mouseKeyboard ? document.pointerLockElement === null : (Date.now() - lastMovementRef.current) < 2000)
+            const autoShow = audioMenuOpenRef.current || upscalerMenuOpenRef.current || (mouseKeyboard ? document.pointerLockElement === null : (Date.now() - lastMovementRef.current) < 2000)
             const showBar = !barManuallyHiddenRef.current && autoShow
 
             if (!showBar) {
@@ -336,6 +344,8 @@ function StreamComponent({
         if (nextHidden) {
             setAudioMenuOpen(false)
             audioMenuOpenRef.current = false
+            setUpscalerMenuOpen(false)
+            upscalerMenuOpenRef.current = false
             barVisibleRef.current = false
             setBarVisible(false)
             const el = document.getElementById('component_streamcomponent_gamebar')
@@ -526,7 +536,10 @@ function StreamComponent({
                                 e.target.blur(); toggleMic()
                             }}></Button> &nbsp;
                             <Button label={<i className="fa-solid fa-headphones"></i>} title={t("streamWindow.audioDevicesTitle")} ariaLabel={t("streamWindow.audioDevicesTitle")} ariaExpanded={audioMenuOpen} ariaControls="component_streamcomponent_audiodevices" autoBlur={false} className={audioMenuOpen ? 'btn-primary' : 'btn'} onClick={(e) => {
-                                e.target.blur(); setAudioMenuOpen(!audioMenuOpen)
+                                e.target.blur(); setUpscalerMenuOpen(false); setAudioMenuOpen(!audioMenuOpen)
+                            }}></Button> &nbsp;
+                            <Button label={<i className="fa-solid fa-wand-magic-sparkles"></i>} title={t("streamWindow.upscalerTitle", "Video Upscaler (FSR / CAS / RTX VSR)")} ariaLabel={t("streamWindow.upscalerTitle", "Video Upscaler (FSR / CAS / RTX VSR)")} ariaExpanded={upscalerMenuOpen} ariaControls="component_streamcomponent_upscaler" autoBlur={false} className={upscalerMenuOpen || activeUpscaler !== 'off' ? 'btn-primary' : 'btn'} onClick={(e) => {
+                                e.target.blur(); setAudioMenuOpen(false); setUpscalerMenuOpen(!upscalerMenuOpen)
                             }}></Button>
                         </div>
 
@@ -570,6 +583,66 @@ function StreamComponent({
                             <label htmlFor="component_streamcomponent_audiodevices_input">{t('settings.videoAudio.inputDeviceLabel')}</label>
                             <AudioDeviceSelect id="component_streamcomponent_audiodevices_input" devices={audioDevices.inputs} value={settings.audio_input_device} onChange={changeInputDevice} />
                         </p>
+                    </div> : null}
+
+                    {upscalerMenuOpen ? <div id="component_streamcomponent_upscaler">
+                        <p>
+                            <label htmlFor="component_streamcomponent_upscaler_mode">{t('settings.videoAudio.upscalerLabel', 'Video Upscaler')}</label>
+                            <select
+                                id="component_streamcomponent_upscaler_mode"
+                                value={activeUpscaler}
+                                onChange={(e) => {
+                                    setSettings({
+                                        ...settings,
+                                        video_upscaler: e.target.value,
+                                    })
+                                }}
+                            >
+                                <option value="off">{t('settings.videoAudio.upscalerModeOff', 'Off (Native)')}</option>
+                                <option value="rtx_vsr">{t('settings.videoAudio.upscalerModeRtxVsr', 'RTX VSR / Intel VSR Passthrough')}</option>
+                                <option value="clarity">{t('settings.videoAudio.upscalerModeClarity', 'Clarity Boost (CSS/SVG)')}</option>
+                                <option value="cas">{t('settings.videoAudio.upscalerModeCas', 'AMD FidelityFX CAS (WebGL2)')}</option>
+                                <option value="fsr1">{t('settings.videoAudio.upscalerModeFsr1', 'AMD FSR 1.0 — EASU + RCAS (WebGL2)')}</option>
+                            </select>
+                        </p>
+                        {(activeUpscaler === 'cas' || activeUpscaler === 'fsr1') ? (
+                            <p>
+                                <label htmlFor="component_streamcomponent_upscaler_sharpness">{t('settings.videoAudio.upscalerSharpnessLabel', 'Sharpness')}</label>
+                                <input
+                                    id="component_streamcomponent_upscaler_sharpness"
+                                    type="range"
+                                    min={0}
+                                    max={1}
+                                    step={0.05}
+                                    value={clampSharpness(settings.video_upscaler_sharpness)}
+                                    onChange={(e) => {
+                                        setSettings({
+                                            ...settings,
+                                            video_upscaler_sharpness: parseFloat(e.target.value),
+                                        })
+                                    }}
+                                />
+                            </p>
+                        ) : null}
+                        {activeUpscaler === 'clarity' ? (
+                            <p>
+                                <label htmlFor="component_streamcomponent_upscaler_clarity">{t('settings.videoAudio.clarityBoostLabel', 'Clarity Boost')}</label>
+                                <input
+                                    id="component_streamcomponent_upscaler_clarity"
+                                    type="range"
+                                    min={0}
+                                    max={1}
+                                    step={0.05}
+                                    value={settings.clarity_boost_strength || 0}
+                                    onChange={(e) => {
+                                        setSettings({
+                                            ...settings,
+                                            clarity_boost_strength: parseFloat(e.target.value),
+                                        })
+                                    }}
+                                />
+                            </p>
+                        ) : null}
                     </div> : null}
                 </div>
 

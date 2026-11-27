@@ -169,7 +169,15 @@
                 "micRefreshBtn": "Atualizar a lista de microfones",
                 "micDescription": "Usado quando você ativa o microfone durante uma transmissão. Se os nomes não aparecerem, clique no botão de atualizar e permita o acesso ao microfone.",
                 "audioTitle": "Áudio",
-                "disableAudioLabel": "Desativar áudio"
+                "disableAudioLabel": "Desativar áudio",
+                "upscalerLabel": "Video Upscaler / Enhancer",
+                "upscalerModeOff": "Off (Native)",
+                "upscalerModeRtxVsr": "RTX VSR / Intel VSR (Hardware Passthrough)",
+                "upscalerModeClarity": "Clarity Boost (CSS/SVG)",
+                "upscalerModeCas": "AMD FidelityFX CAS (WebGL2)",
+                "upscalerModeFsr1": "AMD FSR 1.0 — EASU + RCAS (WebGL2)",
+                "upscalerSharpnessLabel": "Sharpness",
+                "upscalerDescription": "FSR 1.0 performs WebGL2 EASU spatial upscaling + RCAS sharpening. CAS adds halo-free sharpening. RTX VSR keeps hardware overlay clean for NVIDIA/Intel AI video super resolution."
             },
             "webUI": {
                 "pageTitle": "Configurações: Interface web",
@@ -279,7 +287,10 @@
             "itsTakingALittleLonger": "Está demorando um pouco mais... O streaming deve começar em breve.",
             "startingConnection": "Iniciando conexão...",
             "connectingToConsole": "Conectando ao console...",
-            "clientHasBeenDisconnected": "O cliente foi desconectado."
+            "clientHasBeenDisconnected": "O cliente foi desconectado.",
+            "hideMenuBar": "Ocultar barra de menu",
+            "showMenuBar": "Mostrar barra de menu",
+            "upscalerTitle": "Video Upscaler (FSR 1.0 / CAS / RTX VSR)"
         },
         "updater": {
             "unableToCheckForUpdates": "Não foi possível verificar atualizações no momento. Tente novamente.",
@@ -311,9 +322,5 @@
             "details": "Detalhes:",
             "failedToGetPlayerState": "Não foi possível obter o estado do player. Detalhes do erro:"
         }
-    },
-    "streamWindow": {
-        "hideMenuBar": "Ocultar barra de menu",
-        "showMenuBar": "Mostrar barra de menu"
     }
 }

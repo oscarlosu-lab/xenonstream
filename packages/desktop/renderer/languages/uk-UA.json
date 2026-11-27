@@ -179,7 +179,15 @@
                 "outputDeviceLabel": "Пристрій виведення звуку",
                 "inputDeviceLabel": "Мікрофон",
                 "defaultDeviceLabel": "Системний за замовчуванням",
-                "unnamedDeviceLabel": "Пристрій"
+                "unnamedDeviceLabel": "Пристрій",
+                "upscalerLabel": "Video Upscaler / Enhancer",
+                "upscalerModeOff": "Off (Native)",
+                "upscalerModeRtxVsr": "RTX VSR / Intel VSR (Hardware Passthrough)",
+                "upscalerModeClarity": "Clarity Boost (CSS/SVG)",
+                "upscalerModeCas": "AMD FidelityFX CAS (WebGL2)",
+                "upscalerModeFsr1": "AMD FSR 1.0 — EASU + RCAS (WebGL2)",
+                "upscalerSharpnessLabel": "Sharpness",
+                "upscalerDescription": "FSR 1.0 performs WebGL2 EASU spatial upscaling + RCAS sharpening. CAS adds halo-free sharpening. RTX VSR keeps hardware overlay clean for NVIDIA/Intel AI video super resolution."
             },
             "webUI": {
                 "pageTitle": "Налаштування: Web UI",
@@ -289,7 +297,10 @@
             "itsTakingALittleLonger": "Це займає трохи більше часу.. Ваша трансляція може скоро початися.",
             "startingConnection": "Початок підключення...",
             "connectingToConsole": "Підключення до консолі...",
-            "clientHasBeenDisconnected": "Клієнт був відключений."
+            "clientHasBeenDisconnected": "Клієнт був відключений.",
+            "hideMenuBar": "Приховати панель меню",
+            "showMenuBar": "Показати панель меню",
+            "upscalerTitle": "Video Upscaler (FSR 1.0 / CAS / RTX VSR)"
         },
         "updater": {
             "unableToCheckForUpdates": "Не вдалося перевірити наявність оновлень зараз. Спробуйте ще раз.",
@@ -321,9 +332,5 @@
             "details": "Подробиці:",
             "failedToGetPlayerState": "Не вдалося отримати стан гравця. Подробиці про помилку:"
         }
-    },
-    "streamWindow": {
-        "hideMenuBar": "Приховати панель меню",
-        "showMenuBar": "Показати панель меню"
     }
 }

@@ -169,7 +169,15 @@
                 "micRefreshBtn": "마이크 목록 새로 고침",
                 "micDescription": "스트림 중 마이크를 켤 때 사용됩니다. 이름이 보이지 않으면 새로 고침 버튼을 누르고 마이크 접근을 허용하세요.",
                 "audioTitle": "오디오",
-                "disableAudioLabel": "오디오 사용 안 함"
+                "disableAudioLabel": "오디오 사용 안 함",
+                "upscalerLabel": "Video Upscaler / Enhancer",
+                "upscalerModeOff": "Off (Native)",
+                "upscalerModeRtxVsr": "RTX VSR / Intel VSR (Hardware Passthrough)",
+                "upscalerModeClarity": "Clarity Boost (CSS/SVG)",
+                "upscalerModeCas": "AMD FidelityFX CAS (WebGL2)",
+                "upscalerModeFsr1": "AMD FSR 1.0 — EASU + RCAS (WebGL2)",
+                "upscalerSharpnessLabel": "Sharpness",
+                "upscalerDescription": "FSR 1.0 performs WebGL2 EASU spatial upscaling + RCAS sharpening. CAS adds halo-free sharpening. RTX VSR keeps hardware overlay clean for NVIDIA/Intel AI video super resolution."
             },
             "webUI": {
                 "pageTitle": "설정: 웹 UI",
@@ -279,7 +287,10 @@
             "itsTakingALittleLonger": "시간이 조금 더 걸리고 있습니다... 곧 스트리밍이 시작됩니다.",
             "startingConnection": "연결을 시작하는 중...",
             "connectingToConsole": "콘솔에 연결하는 중...",
-            "clientHasBeenDisconnected": "클라이언트 연결이 끊어졌습니다."
+            "clientHasBeenDisconnected": "클라이언트 연결이 끊어졌습니다.",
+            "hideMenuBar": "메뉴 막대 숨기기",
+            "showMenuBar": "메뉴 막대 표시",
+            "upscalerTitle": "Video Upscaler (FSR 1.0 / CAS / RTX VSR)"
         },
         "updater": {
             "unableToCheckForUpdates": "지금은 업데이트를 확인할 수 없습니다. 다시 시도하세요.",
@@ -311,9 +322,5 @@
             "details": "세부 정보:",
             "failedToGetPlayerState": "플레이어 상태를 가져오지 못했습니다. 오류 세부 정보:"
         }
-    },
-    "streamWindow": {
-        "hideMenuBar": "메뉴 막대 숨기기",
-        "showMenuBar": "메뉴 막대 표시"
     }
 }

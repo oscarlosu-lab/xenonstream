@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>XenonStream — 1440p Xbox Remote Play &amp; xCloud Client (Windows, Linux, Steam Deck &amp; macOS)</title>
-  <meta name="description" content="Download XenonStream v1.0.0 for Windows, Linux (AppImage/DEB/Flatpak), Steam Deck &amp; macOS: open-source Xbox Cloud Gaming (xCloud) and Xbox Remote Play client with Obsidian Neon UI, 1440p, HEVC/AV1, Linux VA-API &amp; Wayland, Clarity Boost, LAN low-latency, DPAPI/Keychain auth, 4-player co-op &amp; draggable FPS HUD.">
-  <meta name="keywords" content="XenonStream, Xbox Remote Play 1440p, xCloud Linux Steam Deck, Xbox Cloud Gaming Windows macOS, Xbox Series X streaming, HEVC AV1 VA-API Wayland, Clarity Boost, XenonStream oscarlosu-lab, Xbox FPS overlay, ROG Ally xCloud, Legion Go Xbox Remote Play, Flatpak Xbox streaming">
+  <meta name="description" content="Download XenonStream v1.0.0 for Windows, Linux (AppImage/DEB/Flatpak), Steam Deck &amp; macOS: open-source Xbox Cloud Gaming (xCloud) and Xbox Remote Play client with Obsidian Neon UI, 1440p, HEVC/AV1, Linux VA-API &amp; Wayland, AMD FSR 1.0 / CAS (WebGL2), RTX VSR &amp; Clarity Boost, LAN low-latency, DPAPI/Keychain auth, 4-player co-op &amp; F9 draggable FPS HUD.">
+  <meta name="keywords" content="XenonStream, Xbox Remote Play 1440p, xCloud Linux Steam Deck, Xbox Cloud Gaming Windows macOS, Xbox Series X streaming, HEVC AV1 VA-API Wayland, AMD FSR 1.0, AMD CAS, RTX VSR, Clarity Boost, XenonStream oscarlosu-lab, Xbox FPS overlay, ROG Ally xCloud, Legion Go Xbox Remote Play, Flatpak Xbox streaming">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <meta name="author" content="oscarlosu-lab">
   <meta name="theme-color" content="#060a0d">
@@ -20,7 +20,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="XenonStream — 1440p Xbox Remote Play &amp; xCloud Client">
-  <meta property="og:description" content="Open-source cross-platform client for Xbox Cloud Gaming &amp; Remote Play on Windows, Linux, Steam Deck &amp; macOS. 1440p, HEVC/AV1, VA-API/Wayland, Clarity Boost, LAN low-latency, DPAPI/Keychain auth, 4-player co-op &amp; draggable FPS HUD.">
+  <meta property="og:description" content="Open-source cross-platform client for Xbox Cloud Gaming &amp; Remote Play on Windows, Linux, Steam Deck &amp; macOS. 1440p, HEVC/AV1, VA-API/Wayland, AMD FSR 1.0 / CAS (WebGL2), RTX VSR &amp; Clarity Boost, LAN low-latency, DPAPI/Keychain auth, 4-player co-op &amp; F9 draggable FPS HUD.">
   <meta property="og:url" content="https://oscarlosu-lab.github.io/xenonstream/">
   <meta property="og:site_name" content="XenonStream">
   <meta property="og:locale" content="en_US">
@@ -33,7 +33,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="XenonStream v1.0.0 — 1440p Xbox Remote Play &amp; xCloud">
-  <meta name="twitter:description" content="1440p streaming, HEVC/AV1 codecs, Linux VA-API &amp; Wayland, macOS mic entitlements, Clarity Boost, LAN low-latency, instant-collapse bar &amp; draggable real-time FPS HUD.">
+  <meta name="twitter:description" content="1440p streaming, HEVC/AV1 codecs, Linux VA-API &amp; Wayland, macOS mic entitlements, AMD FSR 1.0 / CAS (WebGL2), RTX VSR &amp; Clarity Boost, LAN low-latency, instant-collapse bar &amp; F9 draggable real-time FPS HUD.">
   <meta name="twitter:image" content="https://oscarlosu-lab.github.io/xenonstream/og-image.png">
 
   <!-- Structured Data: SoftwareApplication -->
@@ -66,7 +66,7 @@
       "HEVC (H.265), AV1, and H.264 High codec selection with RTX/FEC resilience",
       "Linux VA-API hardware decoding and Wayland support via AppImage, DEB, and Flatpak",
       "macOS Universal DMG with microphone entitlements",
-      "Clarity Boost GPU sharpening and Obsidian Neon Emerald-Cyan UI",
+      "AMD FSR 1.0 (EASU + RCAS) and AMD CAS WebGL2 upscalers, RTX VSR passthrough, Clarity Boost, and Obsidian Neon Emerald-Cyan UI",
       "Private-IPv4 host-first LAN low-latency ICE routing and configurable Remote Play public port",
       "Instant-collapse top stream bar chevron and draggable 36px green WebRTC FPS overlay",
       "DPAPI / Keychain encrypted multi-account token storage, QR login, and 401 refresh",
@@ -97,7 +97,7 @@
         "name": "How is XenonStream different from the official Xbox app or legacy clients?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "XenonStream v1.0.0 runs natively on Windows, Linux (VA-API + Wayland + Flatpak), Steam Deck, and macOS, adding 1440p streaming, HEVC/AV1 codec selection, Clarity Boost, LAN host-first UDP routing, configurable Remote Play ports, encrypted multi-account storage, 4-player co-op, an instant-collapse top bar chevron, and a draggable real-time FPS HUD."
+          "text": "XenonStream v1.0.0 runs natively on Windows, Linux (VA-API + Wayland + Flatpak), Steam Deck, and macOS, adding 1440p streaming, HEVC/AV1 codec selection, AMD FSR 1.0 / CAS (WebGL2), RTX VSR passthrough, Clarity Boost, LAN host-first UDP routing, configurable Remote Play ports, encrypted multi-account storage, 4-player co-op, an instant-collapse top bar chevron, and an F9 draggable real-time FPS HUD."
         }
       },
       {
@@ -137,7 +137,7 @@
         "name": "Is XenonStream free and open source?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, XenonStream is 100% free and MIT-licensed. Full source code, 90 automated tests, and cross-platform GitHub Actions workflows are open on GitHub."
+          "text": "Yes, XenonStream is 100% free and MIT-licensed. Full source code, 98 automated tests, and cross-platform GitHub Actions workflows are open on GitHub."
         }
       }
     ]
@@ -635,7 +635,7 @@
           <span class="eyebrow" data-i18n="hero_eyebrow">Xbox Remote Play &amp; xCloud • Windows, Linux, Steam Deck &amp; macOS</span>
           <h1 data-i18n="hero_title">Next-Gen <span class="gradient-text">1440p Xbox Streaming</span> Everywhere.</h1>
           <p class="hero-sub" data-i18n="hero_sub">
-            Open-source cross-platform client for Xbox Cloud Gaming (xCloud) and Xbox Remote Play on Windows 10/11, Linux (VA-API + Wayland), Steam Deck, and macOS. Features the Obsidian Neon UI, HEVC/AV1 decoding, Clarity Boost, LAN low-latency routing, encrypted multi-account storage, instant-collapse toolbar, and draggable FPS HUD.
+            Open-source cross-platform client for Xbox Cloud Gaming (xCloud) and Xbox Remote Play on Windows 10/11, Linux (VA-API + Wayland), Steam Deck, and macOS. Features the Obsidian Neon UI, HEVC/AV1 decoding, AMD FSR 1.0 / CAS (WebGL2), RTX VSR &amp; Clarity Boost, LAN low-latency routing, encrypted multi-account storage, instant-collapse toolbar, and F9 draggable FPS HUD.
           </p>
           <div class="cta-row">
             <a class="btn-primary" href="https://github.com/oscarlosu-lab/xenonstream/releases/latest" target="_blank" rel="noopener" data-i18n="cta_installer">Download v1.0.0</a>
@@ -646,6 +646,7 @@
             <span class="spec-chip">Windows / Linux / macOS</span>
             <span class="spec-chip">720p / 1080p / 1440p</span>
             <span class="spec-chip">H.264 / HEVC / AV1 + VA-API</span>
+            <span class="spec-chip">AMD FSR 1.0 / CAS</span>
             <span class="spec-chip">Electron 45.3.4</span>
             <span class="spec-chip">4-Player Co-op</span>
           </div>
@@ -727,13 +728,13 @@
         <div class="cards-grid">
           <article class="card">
             <div class="card-kicker" data-i18n="f1_k">Video &amp; Codecs</div>
-            <h3 data-i18n="f1_t">1440p, HEVC / AV1 &amp; Clarity Boost</h3>
-            <p data-i18n="f1_d">Unlock 720p, 1080p, and 1440p streaming with unlimited bitrate mode, H.264 / HEVC (H.265) / AV1 preference, preserved RTX/FEC packet recovery, and real-time Clarity Boost GPU sharpening.</p>
+            <h3 data-i18n="f1_t">1440p, HEVC / AV1 &amp; FSR 1.0 / CAS</h3>
+            <p data-i18n="f1_d">Unlock 720p, 1080p, and 1440p streaming with unlimited bitrate mode, H.264 / HEVC (H.265) / AV1 preference, preserved RTX/FEC packet recovery, and live A/B switching between AMD FSR 1.0 (WebGL2), AMD CAS, RTX VSR passthrough, and Clarity Boost.</p>
           </article>
           <article class="card">
             <div class="card-kicker" data-i18n="f2_k">Obsidian Neon UX</div>
             <h3 data-i18n="f2_t">Instant-Collapse Bar &amp; Draggable FPS HUD</h3>
-            <p data-i18n="f2_d">Live WebRTC framesPerSecond readout rendered above the stream in bold green (60FPS) with saved coordinates, plus a compact ▲/▼ chevron to hide or show the top bar immediately.</p>
+            <p data-i18n="f2_d">Live WebRTC framesPerSecond readout (F9 toggle) rendered above the stream in bold green (60FPS) with viewport-clamped saved coordinates, plus a compact ▲/▼ chevron to hide or show the top bar immediately.</p>
           </article>
           <article class="card">
             <div class="card-kicker" data-i18n="f3_k">Linux, Deck &amp; macOS</div>
@@ -783,8 +784,8 @@
                 <td class="no">1080p cap</td>
               </tr>
               <tr>
-                <td data-i18n="c2">HEVC (H.265) / AV1 Codec Selector</td>
-                <td class="yes">Yes + RTX/FEC preserved</td>
+                <td data-i18n="c2">HEVC / AV1 &amp; GPU Upscaling</td>
+                <td class="yes">Yes (FSR 1.0 / CAS / RTX VSR + RTX/FEC)</td>
                 <td class="no">No</td>
                 <td class="no">No user selector</td>
               </tr>
@@ -826,19 +827,19 @@
         <div class="faq-list">
           <details open>
             <summary data-i18n="q1">How is XenonStream different from the official Xbox app or legacy clients?</summary>
-            <p data-i18n="a1">XenonStream is a standalone cross-platform client shipping 1440p streaming, HEVC/AV1 decoding, Linux VA-API &amp; Wayland, macOS Universal DMG + mic entitlements, configurable Remote Play ports, Clarity Boost, LAN host-first ICE, encrypted multi-account tokens, 4-player co-op, 13 languages, Electron 45, an instant-collapse top bar, and a draggable real-time FPS HUD.</p>
+            <p data-i18n="a1">XenonStream is a standalone cross-platform client shipping 1440p streaming, HEVC/AV1 decoding, Linux VA-API &amp; Wayland, macOS Universal DMG + mic entitlements, configurable Remote Play ports, AMD FSR 1.0 / CAS (WebGL2), RTX VSR passthrough, Clarity Boost, LAN host-first ICE, encrypted multi-account tokens, 4-player co-op, 13 languages, Electron 45, an instant-collapse top bar, and an F9 draggable real-time FPS HUD.</p>
           </details>
           <details>
             <summary data-i18n="q2">Does it work on Steam Deck, Linux, macOS, and Windows handhelds?</summary>
-            <p data-i18n="a2">Yes. It runs natively on Windows 10/11 (including ROG Ally, Legion Go, and MSI Claw), Linux / SteamOS (Flatpak, AppImage, DEB), and macOS (Universal DMG) with gamepad UI navigation, vibration support, custom button remapping, and Clarity Boost.</p>
+            <p data-i18n="a2">Yes. It runs natively on Windows 10/11 (including ROG Ally, Legion Go, and MSI Claw), Linux / SteamOS (Flatpak, AppImage, DEB), and macOS (Universal DMG) with gamepad UI navigation, vibration support, custom button remapping, and real-time GPU upscaling (FSR 1.0 / CAS / Clarity Boost).</p>
           </details>
           <details>
             <summary data-i18n="q3">Does the FPS counter show real live FPS and can I hide the top bar instantly?</summary>
-            <p data-i18n="a3">Yes. XenonStream polls WebRTC inbound-rtp video statistics every second to display the actual decoded framesPerSecond in a draggable overlay, and provides a compact ▲/▼ chevron button right below the stream bar to hide or restore it immediately.</p>
+            <p data-i18n="a3">Yes. XenonStream polls WebRTC inbound-rtp video statistics every second to display the actual decoded framesPerSecond in a draggable overlay (toggled with F9 and clamped to the window), and provides a compact ▲/▼ chevron button right below the stream bar to hide or restore it immediately.</p>
           </details>
           <details>
             <summary data-i18n="q4">Is XenonStream free and open source?</summary>
-            <p data-i18n="a4">Yes, XenonStream is 100% free and MIT-licensed. You can inspect the full source code, 90 automated tests, and cross-platform CI workflows on GitHub.</p>
+            <p data-i18n="a4">Yes, XenonStream is 100% free and MIT-licensed. You can inspect the full source code, 98 automated tests, and cross-platform CI workflows on GitHub.</p>
           </details>
         </div>
       </div>
@@ -926,7 +927,7 @@
         nav_download: 'Descargar',
         hero_eyebrow: 'Xbox Remote Play y xCloud • Windows, Linux, Steam Deck y macOS',
         hero_title: 'Streaming Xbox en <span class="gradient-text">1440p de nueva generación</span> en cualquier sistema.',
-        hero_sub: 'Cliente open-source multiplataforma para Xbox Cloud Gaming (xCloud) y Xbox Remote Play en Windows 10/11, Linux (VA-API + Wayland), Steam Deck y macOS. Incluye interfaz Obsidian Neon, decodificación HEVC/AV1, Clarity Boost, baja latencia en LAN, cifrado multi-cuenta, barra plegable al instante y HUD FPS arrastrable.',
+        hero_sub: 'Cliente open-source multiplataforma para Xbox Cloud Gaming (xCloud) y Xbox Remote Play en Windows 10/11, Linux (VA-API + Wayland), Steam Deck y macOS. Incluye interfaz Obsidian Neon, decodificación HEVC/AV1, AMD FSR 1.0 / CAS (WebGL2), RTX VSR y Clarity Boost, baja latencia en LAN, cifrado multi-cuenta, barra plegable al instante y HUD FPS arrastrable.',
         cta_installer: 'Descargar v1.0.0',
         cta_zip: 'Todas las Plataformas (Win / Linux / Mac)',
         cta_repo: 'Ver Código en GitHub',
@@ -942,11 +943,11 @@
         feat_title: 'Diseñado para exprimir Xbox en cualquier sistema',
         feat_sub: 'Cada subsistema optimizado para máxima nitidez, mínima latencia y ergonomía Obsidian Neon.',
         f1_k: 'Vídeo y Códecs',
-        f1_t: '1440p, HEVC / AV1 y Clarity Boost',
-        f1_d: 'Streaming en 720p, 1080p y 1440p sin tope artificial de bitrate, selector H.264 / HEVC (H.265) / AV1 con recuperación RTX/FEC intacta y nitidez GPU Clarity Boost.',
+        f1_t: '1440p, HEVC / AV1 y FSR 1.0 / CAS',
+        f1_d: 'Streaming en 720p, 1080p y 1440p sin tope artificial de bitrate, selector H.264 / HEVC (H.265) / AV1 con recuperación RTX/FEC intacta y cambio en vivo entre AMD FSR 1.0 (WebGL2), AMD CAS, RTX VSR y Clarity Boost.',
         f2_k: 'UX Obsidian Neon',
         f2_t: 'Barra plegable al instante y HUD FPS',
-        f2_d: 'Lectura real por WebRTC (framesPerSecond) sobre el vídeo en verde (60FPS) con posición guardada, más flechita ▲/▼ para ocultar o mostrar la barra al instante.',
+        f2_d: 'Lectura real por WebRTC (framesPerSecond, atajo F9) sobre el vídeo en verde (60FPS) con posición guardada y ajustada al viewport, más flechita ▲/▼ para ocultar o mostrar la barra al instante.',
         f3_k: 'Linux, Deck y macOS',
         f3_t: 'VA-API, Wayland y Micrófono macOS',
         f3_d: 'Decodificación VA-API y flags nativos de Wayland en Linux, Flatpak con drivers Mesa VA-API y DMG Universal en macOS con permisos de micrófono.',
@@ -966,13 +967,13 @@
         th_official: 'App Oficial Xbox',
         faq_title: 'Preguntas Frecuentes',
         q1: '¿En qué se diferencia XenonStream de la App oficial o clientes clásicos?',
-        a1: 'XenonStream es un cliente multiplataforma independiente con streaming 1440p, códecs HEVC/AV1, VA-API + Wayland en Linux, DMG Universal en macOS con micrófono, puerto configurable de Remote Play, Clarity Boost, ruta LAN host-first, cifrado multi-cuenta, co-op de 4 mandos, 13 idiomas, Electron 45, barra superior plegable al instante y HUD FPS real arrastrable.',
+        a1: 'XenonStream es un cliente multiplataforma independiente con streaming 1440p, códecs HEVC/AV1, VA-API + Wayland en Linux, DMG Universal en macOS con micrófono, puerto configurable de Remote Play, AMD FSR 1.0 / CAS (WebGL2), RTX VSR passthrough, Clarity Boost, ruta LAN host-first, cifrado multi-cuenta, co-op de 4 mandos, 13 idiomas, Electron 45, barra superior plegable al instante y HUD FPS real arrastrable (F9).',
         q2: '¿Funciona en Steam Deck, Linux, macOS y portátiles Windows?',
-        a2: 'Sí. Funciona de forma nativa en Windows 10/11 (ROG Ally, Legion Go, MSI Claw), Linux / SteamOS (Flatpak, AppImage, DEB) y macOS (DMG Universal) con navegación por mando, vibración, remapeo de botones y Clarity Boost.',
+        a2: 'Sí. Funciona de forma nativa en Windows 10/11 (ROG Ally, Legion Go, MSI Claw), Linux / SteamOS (Flatpak, AppImage, DEB) y macOS (DMG Universal) con navegación por mando, vibración, remapeo de botones y reescalado GPU en tiempo real (FSR 1.0 / CAS / Clarity Boost).',
         q3: '¿El contador de FPS muestra los FPS reales y puedo esconder la barra superior al instante?',
-        a3: 'Sí. XenonStream consulta cada segundo las estadísticas WebRTC del stream para mostrar el framesPerSecond real en un cuadro verde arrastrable, e incluye una flechita ▲/▼ justo debajo de la barra superior para ocultarla o mostrarla al instante.',
+        a3: 'Sí. XenonStream consulta cada segundo las estadísticas WebRTC del stream para mostrar el framesPerSecond real en un cuadro verde arrastrable (atajo F9 y ajustado automáticamente a la ventana), e incluye una flechita ▲/▼ justo debajo de la barra superior para ocultarla o mostrarla al instante.',
         q4: '¿Es gratuito y de código abierto?',
-        a4: 'Sí, XenonStream es 100% gratuito bajo licencia MIT. Puedes revisar todo el código fuente, los 90 tests automatizados y los workflows en GitHub.',
+        a4: 'Sí, XenonStream es 100% gratuito bajo licencia MIT. Puedes revisar todo el código fuente, los 98 tests automatizados y los workflows en GitHub.',
         com_title: 'Apoya el proyecto y únete a la comunidad',
         com_sub: 'Deja una estrella en GitHub, reporta sugerencias o apoya nuevas mejoras multiplataforma en Ko-fi.',
         disclaimer: 'Sin afiliación con Microsoft, Xbox ni Moonlight. Todas las marcas pertenecen a sus respectivos propietarios.'

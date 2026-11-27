@@ -8,6 +8,7 @@ import Ipc from '../../lib/ipc'
 import { useAudioDevices } from '../../lib/audiodevices'
 import { useSettings } from '../../context/userContext'
 import { defaultSettings } from '../../context/userContext.defaults'
+import { normalizeUpscalerMode } from '../../../lib/videoUpscaler'
 import { useTranslation } from 'react-i18next'
 
 
@@ -37,10 +38,26 @@ function SettingsVideo() {
         })
     }
 
+    const activeUpscaler = normalizeUpscalerMode(settings.video_upscaler, settings.clarity_boost_strength)
+
     function setClarityBoost(e){
         setSettings({
             ...settings,
             clarity_boost_strength: parseFloat(e.target.value),
+        })
+    }
+
+    function setUpscalerMode(mode: string){
+        setSettings({
+            ...settings,
+            video_upscaler: mode,
+        })
+    }
+
+    function setUpscalerSharpness(e){
+        setSettings({
+            ...settings,
+            video_upscaler_sharpness: parseFloat(e.target.value),
         })
     }
 
@@ -74,6 +91,9 @@ function SettingsVideo() {
             audio_enabled: defaultSettings.audio_enabled,
             video_size: defaultSettings.video_size,
             app_lowresolution: defaultSettings.app_lowresolution,
+            clarity_boost_strength: defaultSettings.clarity_boost_strength,
+            video_upscaler: defaultSettings.video_upscaler,
+            video_upscaler_sharpness: defaultSettings.video_upscaler_sharpness,
             stream_fps_overlay: defaultSettings.stream_fps_overlay,
         })
     }
@@ -115,12 +135,37 @@ function SettingsVideo() {
                     </p>
 
                     <p>
-                        <label>{t('settings.videoAudio.clarityBoostLabel')}</label>
-                        <input type='range' min='0' max='1' step='0.05' value={settings.clarity_boost_strength} onChange={ setClarityBoost } />
-                        ({ settings.clarity_boost_strength })
+                        <label>{t('settings.videoAudio.upscalerLabel')}</label>
+                        <select value={ activeUpscaler } onChange={(e) => {
+                            setUpscalerMode(e.target.value)
+                        }}>
+                            <option value='off'>{t('settings.videoAudio.upscalerModeOff')}</option>
+                            <option value='rtx_vsr'>{t('settings.videoAudio.upscalerModeRtxVsr')}</option>
+                            <option value='clarity'>{t('settings.videoAudio.upscalerModeClarity')}</option>
+                            <option value='cas'>{t('settings.videoAudio.upscalerModeCas')}</option>
+                            <option value='fsr1'>{t('settings.videoAudio.upscalerModeFsr1')}</option>
+                        </select>
                         <br />
-                        <small>{t('settings.videoAudio.clarityBoostDescription')}</small>
+                        <small>{t('settings.videoAudio.upscalerDescription')}</small>
                     </p>
+
+                    {(activeUpscaler === 'cas' || activeUpscaler === 'fsr1') && (
+                        <p>
+                            <label>{t('settings.videoAudio.upscalerSharpnessLabel')}</label>
+                            <input type='range' min='0' max='1' step='0.05' value={settings.video_upscaler_sharpness ?? 0.5} onChange={ setUpscalerSharpness } />
+                            ({ settings.video_upscaler_sharpness ?? 0.5 })
+                        </p>
+                    )}
+
+                    {activeUpscaler === 'clarity' && (
+                        <p>
+                            <label>{t('settings.videoAudio.clarityBoostLabel')}</label>
+                            <input type='range' min='0' max='1' step='0.05' value={settings.clarity_boost_strength} onChange={ setClarityBoost } />
+                            ({ settings.clarity_boost_strength })
+                            <br />
+                            <small>{t('settings.videoAudio.clarityBoostDescription')}</small>
+                        </p>
+                    )}
 
                     <p>
                         <label>{t('settings.videoAudio.fpsOverlayLabel')}</label>

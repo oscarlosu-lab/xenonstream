@@ -15,6 +15,7 @@ import { applyRemoteOfferErrorHandling, applySystemUiSupport, clearSystemUiOverl
 import { applyLowLatencyReceivers, filterIceCandidates, followConsolePicture, logIceList, logSelectedIcePath, logStreamPath, waitForLocalIce } from '../../lib/streamPath'
 import { configureStreamResolution } from '../../lib/streamresolution'
 import { CLARITY_SVG_FILTER_ID, getClaritySharpenKernel, getClarityVideoFilter } from '../../../lib/clarityBoost'
+import { clampSharpness, normalizeUpscalerMode, VideoSizeMode, WebGLVideoUpscaler } from '../../../lib/videoUpscaler'
 import { applyVideoCodecPreferences, DEFAULT_H264_PROFILES } from '../../../lib/codecPreference'
 import { useTranslation } from 'react-i18next'
 
@@ -30,6 +31,7 @@ function Stream() {
     const startingSessionRef = React.useRef(false)
     const disconnectRequestedRef = React.useRef(false)
     const streamStateIntervalRef = React.useRef<ReturnType<typeof setInterval> | undefined>(undefined)
+    const upscalerRef = React.useRef<WebGLVideoUpscaler | null>(null)
 
     React.useEffect(() => {
         if (!router.query.serverid || xPlayer !== undefined) {
@@ -175,7 +177,6 @@ function Stream() {
         let keepaliveInterval: ReturnType<typeof setInterval> | undefined
         let pathLogInterval: ReturnType<typeof setInterval> | undefined
         let stopFollowingPicture: (() => void) | undefined
-        let clarityBoostObserver: MutationObserver | undefined
 
         const streamType = (typeof router.query.serverid === 'string' && router.query.serverid.substr(0, 6) === 'xcloud') ? 'cloud' : 'home'
         const holder = document.getElementById('streamComponentHolder')
@@ -204,52 +205,6 @@ function Stream() {
 
         // Stream is ready so we start the player
         xPlayer.setControllerRumble(settings.controller_vibration)
-
-        const sharpenKernel = getClaritySharpenKernel(settings.clarity_boost_strength)
-        let claritySvgElement: SVGSVGElement | undefined
-        if (sharpenKernel && typeof document.createElementNS === 'function' && document.body) {
-            const existingSvg = document.getElementById('xenonstream-clarity-svg')
-            if (existingSvg) {
-                existingSvg.remove()
-            }
-            const svgNS = 'http://www.w3.org/2000/svg'
-            const svg = document.createElementNS(svgNS, 'svg')
-            svg.setAttribute('id', 'xenonstream-clarity-svg')
-            svg.setAttribute('width', '0')
-            svg.setAttribute('height', '0')
-            svg.setAttribute('style', 'position:absolute;width:0;height:0;pointer-events:none;')
-            const filter = document.createElementNS(svgNS, 'filter')
-            filter.setAttribute('id', CLARITY_SVG_FILTER_ID)
-            const convolve = document.createElementNS(svgNS, 'feConvolveMatrix')
-            convolve.setAttribute('order', '3')
-            convolve.setAttribute('kernelMatrix', sharpenKernel)
-            convolve.setAttribute('preserveAlpha', 'true')
-            filter.appendChild(convolve)
-            svg.appendChild(filter)
-            document.body.appendChild(svg)
-            claritySvgElement = svg
-        }
-
-        const streamHolder = document.getElementById('streamComponent')
-        if (streamHolder && typeof streamHolder.querySelector === 'function') {
-            const applyFilterIfPresent = () => {
-                const videoElement = streamHolder.querySelector('video')
-                if (videoElement) {
-                    videoElement.style.filter = getClarityVideoFilter(settings.clarity_boost_strength, claritySvgElement !== undefined)
-                    return true
-                }
-                return false
-            }
-
-            if (!applyFilterIfPresent() && typeof MutationObserver !== 'undefined') {
-                clarityBoostObserver = new MutationObserver(() => {
-                    if (applyFilterIfPresent()) {
-                        clarityBoostObserver?.disconnect()
-                    }
-                })
-                clarityBoostObserver.observe(streamHolder, { childList: true, subtree: true })
-            }
-        }
         xPlayer.setSdpHandler((client, offer) => {
             if(isUnmounting){
                 return
@@ -441,17 +396,123 @@ function Stream() {
                 stopFollowingPicture()
                 stopFollowingPicture = undefined
             }
-            if(clarityBoostObserver !== undefined){
-                clarityBoostObserver.disconnect()
-                clarityBoostObserver = undefined
-            }
-            if(claritySvgElement !== undefined){
-                claritySvgElement.remove()
-                claritySvgElement = undefined
-            }
             clearSystemUiOverlays()
 
             xPlayer.close()
+        }
+    }, [xPlayer])
+
+    // Live-reactive video enhancement pipeline (Off / RTX VSR / Clarity Boost / AMD CAS / AMD FSR 1.0)
+    React.useEffect(() => {
+        if (xPlayer === undefined || typeof document === 'undefined') {
+            return
+        }
+
+        const mode = normalizeUpscalerMode(settings.video_upscaler, settings.clarity_boost_strength)
+        const sharpness = clampSharpness(settings.video_upscaler_sharpness)
+        const videoSize = (settings.video_size || 'default') as VideoSizeMode
+        const streamHolder = document.getElementById('streamComponent')
+        if (!streamHolder) {
+            return
+        }
+        streamHolder.className = 'size_' + videoSize
+
+        let claritySvgElement: SVGSVGElement | undefined
+        let enhancerObserver: MutationObserver | undefined
+
+        const cleanupSvg = () => {
+            const existingSvg = document.getElementById('xenonstream-clarity-svg')
+            if (existingSvg) {
+                existingSvg.remove()
+            }
+            claritySvgElement = undefined
+        }
+
+        const applyEnhancement = (): boolean => {
+            const videoElement = typeof streamHolder.querySelector === 'function'
+                ? (streamHolder.querySelector('video') as HTMLVideoElement | null)
+                : null
+            if (!videoElement) {
+                return false
+            }
+
+            if (mode === 'cas' || mode === 'fsr1') {
+                cleanupSvg()
+                videoElement.style.filter = ''
+                if (upscalerRef.current && upscalerRef.current.isActive()) {
+                    upscalerRef.current.updateConfig({ mode, sharpness, videoSize })
+                } else {
+                    upscalerRef.current?.destroy()
+                    upscalerRef.current = new WebGLVideoUpscaler(streamHolder, videoElement, { mode, sharpness, videoSize })
+                }
+                logStreamPath(`video upscaler=${mode} sharpness=${sharpness.toFixed(2)}`)
+                return true
+            }
+
+            // Off / RTX VSR / Clarity -> tear down any WebGL2 canvas
+            if (upscalerRef.current) {
+                upscalerRef.current.destroy()
+                upscalerRef.current = null
+            }
+            videoElement.style.opacity = ''
+
+            if (mode === 'clarity') {
+                const sharpenKernel = getClaritySharpenKernel(settings.clarity_boost_strength)
+                if (sharpenKernel && typeof document.createElementNS === 'function' && document.body) {
+                    cleanupSvg()
+                    const svgNS = 'http://www.w3.org/2000/svg'
+                    const svg = document.createElementNS(svgNS, 'svg')
+                    svg.setAttribute('id', 'xenonstream-clarity-svg')
+                    svg.setAttribute('width', '0')
+                    svg.setAttribute('height', '0')
+                    svg.setAttribute('style', 'position:absolute;width:0;height:0;pointer-events:none;')
+                    const filter = document.createElementNS(svgNS, 'filter')
+                    filter.setAttribute('id', CLARITY_SVG_FILTER_ID)
+                    const convolve = document.createElementNS(svgNS, 'feConvolveMatrix')
+                    convolve.setAttribute('order', '3')
+                    convolve.setAttribute('kernelMatrix', sharpenKernel)
+                    convolve.setAttribute('preserveAlpha', 'true')
+                    filter.appendChild(convolve)
+                    svg.appendChild(filter)
+                    document.body.appendChild(svg)
+                    claritySvgElement = svg
+                } else {
+                    cleanupSvg()
+                }
+                videoElement.style.filter = getClarityVideoFilter(settings.clarity_boost_strength, claritySvgElement !== undefined)
+                logStreamPath(`video upscaler=clarity strength=${Number(settings.clarity_boost_strength || 0).toFixed(2)}`)
+                return true
+            }
+
+            // 'off' or 'rtx_vsr': pure hardware overlay passthrough (no CSS/SVG filters)
+            cleanupSvg()
+            videoElement.style.filter = ''
+            logStreamPath(`video upscaler=${mode}`)
+            return true
+        }
+
+        if (!applyEnhancement() && typeof MutationObserver !== 'undefined') {
+            enhancerObserver = new MutationObserver(() => {
+                if (applyEnhancement()) {
+                    enhancerObserver?.disconnect()
+                    enhancerObserver = undefined
+                }
+            })
+            enhancerObserver.observe(streamHolder, { childList: true, subtree: true })
+        }
+
+        return () => {
+            enhancerObserver?.disconnect()
+            cleanupSvg()
+        }
+    }, [xPlayer, settings.video_upscaler, settings.video_upscaler_sharpness, settings.clarity_boost_strength, settings.video_size])
+
+    React.useEffect(() => {
+        return () => {
+            if (upscalerRef.current) {
+                upscalerRef.current.destroy()
+                upscalerRef.current = null
+            }
         }
     }, [xPlayer])
 

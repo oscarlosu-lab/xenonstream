@@ -195,7 +195,15 @@
                 "outputDeviceLabel": "Dispositivo de salida de audio",
                 "inputDeviceLabel": "Micrófono",
                 "defaultDeviceLabel": "Predeterminado del sistema",
-                "unnamedDeviceLabel": "Dispositivo"
+                "unnamedDeviceLabel": "Dispositivo",
+                "upscalerLabel": "Escalador / Mejora de vídeo",
+                "upscalerModeOff": "Desactivado (Nativo)",
+                "upscalerModeRtxVsr": "RTX VSR / Intel VSR (Hardware Passthrough)",
+                "upscalerModeClarity": "Clarity Boost (CSS/SVG)",
+                "upscalerModeCas": "AMD FidelityFX CAS (WebGL2)",
+                "upscalerModeFsr1": "AMD FSR 1.0 — EASU + RCAS (WebGL2)",
+                "upscalerSharpnessLabel": "Nitidez",
+                "upscalerDescription": "FSR 1.0 aplica reescalado espacial EASU + nitidez RCAS en WebGL2. CAS aporta nitidez sin halos. RTX VSR deja el vídeo en overlay de hardware para la IA de NVIDIA/Intel."
             },
             "webUI": {
                 "pageTitle": "Configuración: Interfaz Web",
@@ -315,7 +323,10 @@
             "itsTakingALittleLonger": "Está tardando un poco más de lo habitual... El streaming debería comenzar pronto.",
             "startingConnection": "Iniciando conexión...",
             "connectingToConsole": "Conectando con la consola...",
-            "clientHasBeenDisconnected": "El cliente se ha desconectado."
+            "clientHasBeenDisconnected": "El cliente se ha desconectado.",
+            "hideMenuBar": "Ocultar barra de menú",
+            "showMenuBar": "Mostrar barra de menú",
+            "upscalerTitle": "Escalador de vídeo (FSR 1.0 / CAS / RTX VSR)"
         },
         "updater": {
             "unableToCheckForUpdates": "No se ha podido comprobar si hay actualizaciones en este momento. Inténtalo de nuevo.",
@@ -347,9 +358,5 @@
             "details": "Detalles:",
             "failedToGetPlayerState": "Error al obtener el estado del jugador. Detalles del error:"
         }
-    },
-    "streamWindow": {
-        "hideMenuBar": "Ocultar barra de menú",
-        "showMenuBar": "Mostrar barra de menú"
     }
 }

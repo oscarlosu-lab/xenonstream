@@ -178,7 +178,15 @@
                 "outputDeviceLabel": "Urządzenie wyjściowe audio",
                 "inputDeviceLabel": "Mikrofon",
                 "defaultDeviceLabel": "Domyślne systemowe",
-                "unnamedDeviceLabel": "Urządzenie"
+                "unnamedDeviceLabel": "Urządzenie",
+                "upscalerLabel": "Video Upscaler / Enhancer",
+                "upscalerModeOff": "Off (Native)",
+                "upscalerModeRtxVsr": "RTX VSR / Intel VSR (Hardware Passthrough)",
+                "upscalerModeClarity": "Clarity Boost (CSS/SVG)",
+                "upscalerModeCas": "AMD FidelityFX CAS (WebGL2)",
+                "upscalerModeFsr1": "AMD FSR 1.0 — EASU + RCAS (WebGL2)",
+                "upscalerSharpnessLabel": "Sharpness",
+                "upscalerDescription": "FSR 1.0 performs WebGL2 EASU spatial upscaling + RCAS sharpening. CAS adds halo-free sharpening. RTX VSR keeps hardware overlay clean for NVIDIA/Intel AI video super resolution."
             },
             "webUI": {
                 "pageTitle": "Ustawienia: Interfejs webowy",
@@ -285,7 +293,10 @@
             "itsTakingALittleLonger": "Zajmie to chwilę dłużej.. Twój strumień może się rozpocząć za niedługo.",
             "startingConnection": "Rozpoczynanie połączenia...",
             "connectingToConsole": "Łączenie z konsolą...",
-            "clientHasBeenDisconnected": "Klient został rozłączony."
+            "clientHasBeenDisconnected": "Klient został rozłączony.",
+            "hideMenuBar": "Ukryj pasek menu",
+            "showMenuBar": "Pokaż pasek menu",
+            "upscalerTitle": "Video Upscaler (FSR 1.0 / CAS / RTX VSR)"
         },
         "updater": {
             "unableToCheckForUpdates": "Nie udało się sprawdzić czy jest dostępna aktualizacja w tej chwili. Spróbuj ponownie.",
@@ -317,9 +328,5 @@
             "details": "Szczegóły:",
             "failedToGetPlayerState": "Nie udało się uzyskać stanu gracza. Szczegóły błędu:"
         }
-    },
-    "streamWindow": {
-        "hideMenuBar": "Ukryj pasek menu",
-        "showMenuBar": "Pokaż pasek menu"
     }
 }

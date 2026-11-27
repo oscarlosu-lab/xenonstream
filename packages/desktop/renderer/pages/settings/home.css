@@ -27,6 +27,7 @@ div#component_settings_sidebar_content ul.kv-list li {
 div#component_settings_sidebar_content label {
     font-weight: 600;
     min-width: 250px;
+    padding-right: 16px;
     display: inline-block;
     color: #e2e8f0;
 }

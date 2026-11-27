@@ -195,7 +195,15 @@
                 "outputDeviceLabel": "Audio output device",
                 "inputDeviceLabel": "Microphone",
                 "defaultDeviceLabel": "System default",
-                "unnamedDeviceLabel": "Device"
+                "unnamedDeviceLabel": "Device",
+                "upscalerLabel": "Video Upscaler / Enhancer",
+                "upscalerModeOff": "Off (Native)",
+                "upscalerModeRtxVsr": "RTX VSR / Intel VSR (Hardware Passthrough)",
+                "upscalerModeClarity": "Clarity Boost (CSS/SVG)",
+                "upscalerModeCas": "AMD FidelityFX CAS (WebGL2)",
+                "upscalerModeFsr1": "AMD FSR 1.0 — EASU + RCAS (WebGL2)",
+                "upscalerSharpnessLabel": "Sharpness",
+                "upscalerDescription": "FSR 1.0 performs WebGL2 EASU spatial upscaling + RCAS sharpening. CAS adds halo-free sharpening. RTX VSR keeps hardware overlay clean for NVIDIA/Intel AI video super resolution."
             },
             "webUI": {
                 "pageTitle": "Settings: Web UI",
@@ -315,7 +323,10 @@
             "itsTakingALittleLonger": "It's taking a little longer.. Your stream may start soon.",
             "startingConnection": "Starting connection...",
             "connectingToConsole": "Connecting to console...",
-            "clientHasBeenDisconnected": "The client has been disconnected."
+            "clientHasBeenDisconnected": "The client has been disconnected.",
+            "hideMenuBar": "Hide menu bar",
+            "showMenuBar": "Show menu bar",
+            "upscalerTitle": "Video Upscaler (FSR 1.0 / CAS / RTX VSR)"
         },
         "updater": {
             "unableToCheckForUpdates": "Unable to check for updates at this moment. Try again.",
@@ -347,9 +358,5 @@
             "details": "Details:",
             "failedToGetPlayerState": "Failed to get player state. Error details:"
         }
-    },
-    "streamWindow": {
-        "hideMenuBar": "Hide menu bar",
-        "showMenuBar": "Show menu bar"
     }
 }
